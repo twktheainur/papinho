@@ -6,6 +6,7 @@
 package org.client;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import org.common.model.ChatMessage;
 
 /**
@@ -13,5 +14,5 @@ import org.common.model.ChatMessage;
  * @author tchchmea
  */
 public interface PapinhoClientIface extends Remote{
-    void receiveMessage(ChatMessage msg);
+    void receiveMessage(ChatMessage msg) throws RemoteException;
 }

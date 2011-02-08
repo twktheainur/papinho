@@ -6,6 +6,7 @@
 package org.server;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import org.common.model.ChatMessage;
 import org.common.model.History;
 
@@ -14,7 +15,7 @@ import org.common.model.History;
  * @author tchchmea
  */
 public interface PapinhoServerIface extends Remote{
-    void sendMessage(ChatMessage msg);
-    History addClient(String name);
-    void removeClient(String name);
+    public void sendMessage(ChatMessage msg) throws RemoteException;
+    public History addClient(String name) throws RemoteException;
+    public void removeClient(String name) throws RemoteException;
 }

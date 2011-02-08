@@ -19,12 +19,13 @@ public class MainServer {
         try {
             PapinhoServerIface psi = new PapinhoServer();
             UnicastRemoteObject.exportObject(psi, 0);
-            Registry registry = LocateRegistry.getRegistry();
+            Registry registry = LocateRegistry.getRegistry(8090);
             registry.bind("server", psi);
             System.out.println("Server started");
 
         } catch (Exception e) {
             System.err.println("Error on server :" + e);
+            e.printStackTrace();
             return;
         }
 
