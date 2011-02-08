@@ -15,6 +15,12 @@ public class ChatMessage implements Remote{
     String message;
     String name;
 
+    public ChatMessage(String message, String name) {
+        this.message = message;
+        this.name = name;
+    }
+
+    
     public String getMessage() {
         return message;
     }
