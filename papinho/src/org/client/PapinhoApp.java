@@ -16,8 +16,12 @@ public class PapinhoApp extends SingleFrameApplication {
      * At startup create and show the main frame of the application.
      */
     @Override protected void startup() {
-        show(new PapinhoView(this));
+        view = new PapinhoView(this);
+        client = new PapinhoClient(view);
+        show(view);
     }
+
+
 
     /**
      * This method is to initialize the specified window by injecting resources.
@@ -41,4 +45,7 @@ public class PapinhoApp extends SingleFrameApplication {
     public static void main(String[] args) {
         launch(PapinhoApp.class, args);
     }
+
+    private PapinhoView view;
+    private PapinhoClient client;
 }

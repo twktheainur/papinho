@@ -15,4 +15,6 @@ import org.common.model.ChatMessage;
  */
 public interface PapinhoClientIface extends Remote{
     void receiveMessage(ChatMessage msg) throws RemoteException;
+    void addClient(String name) throws RemoteException;
+    void removeClient(String name) throws RemoteException;
 }
