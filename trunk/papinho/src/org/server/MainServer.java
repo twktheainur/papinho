@@ -23,25 +23,32 @@ public class MainServer {
     }
 
     public void start(){
-
         try {
-            PapinhoServerIface psi = new PapinhoServer();
+            PapinhoServerIface psi = new PapinhoServer(this);
             UnicastRemoteObject.exportObject(psi, 0);
             Registry registry = LocateRegistry.getRegistry(this.host,this.port);
             registry.bind("server", psi);
             System.out.println("Server started");
-
         } catch (Exception e) {
             System.err.println("Error on server :" + e);
             e.printStackTrace();
             return;
         }
-
     }
 
     public static void main(String... args) {
         MainServer ms=new MainServer("localhost",8090);
         ms.start();
     }
+
+    public String getHost() {
+        return host;
+    }
+
+    public int getPort() {
+        return port;
+    }
+    
+    
 
 }

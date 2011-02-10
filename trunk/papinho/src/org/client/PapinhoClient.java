@@ -5,18 +5,17 @@
 package org.client;
 
 import java.rmi.RemoteException;
+import java.util.Random;
 import javax.swing.JOptionPane;
 import org.common.model.ChatMessage;
 import org.server.PapinhoServerIface;
 
-/**
- *
- * @author tchchmea
- */
 public class PapinhoClient implements PapinhoClientIface {
 
     public PapinhoClient(PapinhoView view) {
         this.view = view;
+        Random r = new Random();
+        name = "User"+r.nextInt();
         view.setClient(this);
     }
 
@@ -50,7 +49,21 @@ public class PapinhoClient implements PapinhoClientIface {
 
     public void setServer(PapinhoServerIface server) {
         this.server = server;
+        try{
+            server.addClient("Client_"+name);
+        } catch(RemoteException rEx){
+        }
     }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    
     private PapinhoServerIface server;
     private PapinhoView view;
+    private String name;
 }
