@@ -4,25 +4,26 @@
  */
 
 /*
- * ConnectView.java
+ * OptionsView.java
  *
- * Created on 8 févr. 2011, 11:40:18
+ * Created on 10-Feb-2011, 16:53:54
  */
 
 package org.client;
 
-import org.jdesktop.application.Action;
+import javax.swing.JOptionPane;
 
 /**
  *
- * @author tchchmea
+ * @author twk
  */
-public class ConnectView extends javax.swing.JFrame {
+public class OptionsView extends javax.swing.JFrame {
 
-    /** Creates new form ConnectView */
-    public ConnectView(PapinhoView mv) {
+    /** Creates new form OptionsView */
+    public OptionsView(PapinhoClient client) {
         initComponents();
-        mainView = mv;
+        this.client = client;
+        tfUsername.setText(client.getName());
     }
 
     /** This method is called from within the constructor to
@@ -34,26 +35,15 @@ public class ConnectView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        bOk = new javax.swing.JButton();
         bCancel = new javax.swing.JButton();
+        bOk = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        tfHost = new javax.swing.JTextField();
-        tfPort = new javax.swing.JTextField();
+        tfUsername = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setName("Form"); // NOI18N
 
-        bOk.setMnemonic('O');
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(org.client.PapinhoApp.class).getContext().getResourceMap(ConnectView.class);
-        bOk.setText(resourceMap.getString("bOk.text")); // NOI18N
-        bOk.setName("bOk"); // NOI18N
-        bOk.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bOkActionPerformed(evt);
-            }
-        });
-
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(org.client.PapinhoApp.class).getContext().getResourceMap(OptionsView.class);
         bCancel.setText(resourceMap.getString("bCancel.text")); // NOI18N
         bCancel.setName("bCancel"); // NOI18N
         bCancel.addActionListener(new java.awt.event.ActionListener() {
@@ -62,16 +52,19 @@ public class ConnectView extends javax.swing.JFrame {
             }
         });
 
+        bOk.setMnemonic('O');
+        bOk.setText(resourceMap.getString("bOk.text")); // NOI18N
+        bOk.setName("bOk"); // NOI18N
+        bOk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bOkActionPerformed(evt);
+            }
+        });
+
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
 
-        jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
-        jLabel2.setName("jLabel2"); // NOI18N
-
-        tfHost.setText(resourceMap.getString("tfHost.text")); // NOI18N
-        tfHost.setName("tfHost"); // NOI18N
-
-        tfPort.setName("tfPort"); // NOI18N
+        tfUsername.setName("tfUsername"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -81,13 +74,9 @@ public class ConnectView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
+                        .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfPort, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tfHost, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(tfUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(bCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -100,43 +89,41 @@ public class ConnectView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(tfHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(tfPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                    .addComponent(tfUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bOk)
                     .addComponent(bCancel))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void bOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bOkActionPerformed
-        String host = tfHost.getText();
-        String port = tfPort.getText();
-        PapinhoApp.getApplication().getRemoteServerObject(host, port);
-        mainView.getmConnect().setVisible(false);
-        mainView.getmDisconnect().setVisible(true);
-        mainView.getbSend().setEnabled(true);
-        dispose();
-    }//GEN-LAST:event_bOkActionPerformed
-
     private void bCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCancelActionPerformed
         dispose();
-    }//GEN-LAST:event_bCancelActionPerformed
+}//GEN-LAST:event_bCancelActionPerformed
 
-    private PapinhoView mainView;
+    private void bOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bOkActionPerformed
+
+        String username = tfUsername.getText();
+        if(username.length()>0){
+            client.setName(username);
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Username too short",
+                    "The username cannot be empty",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+}//GEN-LAST:event_bOkActionPerformed
+
+    private PapinhoClient client;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bCancel;
     private javax.swing.JButton bOk;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField tfHost;
-    private javax.swing.JTextField tfPort;
+    private javax.swing.JTextField tfUsername;
     // End of variables declaration//GEN-END:variables
-    
+
 }
