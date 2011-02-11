@@ -5,13 +5,14 @@
 
 package org.common.model;
 
+import java.io.Serializable;
 import java.rmi.Remote;
 
 /**
  *
  * @author tchchmea
  */
-public class ChatMessage implements Remote{
+public class ChatMessage implements Remote,Serializable{
     String message;
     String name;
 

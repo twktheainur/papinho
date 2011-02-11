@@ -5,10 +5,12 @@
 
 package org.common.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author tchchmea
  */
-public class History {
+public class History implements Serializable {
 
 }
