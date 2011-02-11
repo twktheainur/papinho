@@ -16,7 +16,7 @@ public class ChatMessage implements Remote,Serializable{
     String message;
     String name;
 
-    public ChatMessage(String message, String name) {
+    public ChatMessage(String name, String message) {
         this.message = message;
         this.name = name;
     }

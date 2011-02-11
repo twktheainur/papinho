@@ -44,6 +44,7 @@ public class PapinhoApp extends SingleFrameApplication {
     public void releaseRemoteServerObject() {
         try {
             client.getServer().removeClient("Client_"+client.getName());
+            UnicastRemoteObject.unexportObject(client, true);
         } catch (Exception e) {
             System.err.println("Error releasing the server: " + e);
             e.printStackTrace();

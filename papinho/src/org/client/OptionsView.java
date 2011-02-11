@@ -8,9 +8,9 @@
  *
  * Created on 10-Feb-2011, 16:53:54
  */
-
 package org.client;
 
+import java.rmi.RemoteException;
 import javax.swing.JOptionPane;
 
 /**
@@ -107,17 +107,24 @@ public class OptionsView extends javax.swing.JFrame {
     private void bOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bOkActionPerformed
 
         String username = tfUsername.getText();
-        if(username.length()>0){
-            client.setName(username);
+        if (username.length() > 0) {
+            try {
+                client.getServer().clientNameChange(client.getName(), username);
+                client.setName(username);
+            } catch (RemoteException rEx) {
+                JOptionPane.showMessageDialog(this,
+                        rEx.getMessage(),
+                        "Username error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
             dispose();
         } else {
             JOptionPane.showMessageDialog(this,
-                    "Username too short",
                     "The username cannot be empty",
+                    "Username too short",
                     JOptionPane.ERROR_MESSAGE);
         }
 }//GEN-LAST:event_bOkActionPerformed
-
     private PapinhoClient client;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bCancel;
@@ -125,5 +132,4 @@ public class OptionsView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JTextField tfUsername;
     // End of variables declaration//GEN-END:variables
-
 }
