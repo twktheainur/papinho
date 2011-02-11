@@ -43,23 +43,22 @@ public class PapinhoServer implements PapinhoServerIface {
     }
 
     public void sendMessage(ChatMessage msg) throws RemoteException {
-        for (PapinhoClientIface client : clientList.values()) {
-            client.receiveMessage(msg);
+        System.out.println("<dispatching message='"+msg+"'>");
+        for (String client : clientList.keySet()) {
+            System.out.println("<client name='"+client+"'/>");
+            clientList.get(client).receiveMessage(msg);
         }
+        System.out.println("</dispatching>");
     }
 
     public History addClient(String registeredName) {
-        PapinhoClientIface pci = getClientRef(registeredName);
-        String name = "";
+        PapinhoClientIface pci = getClientRef(registeredName);        
         try {
-            name = pci.getName();
-            for (PapinhoClientIface client : clientList.values()) {
-                client.addClient(name);
-            }
+            String name = pci.getName();
+            System.out.println("registering client.."+name);
             clientList.put(registeredName, pci);
             return new History();
         } catch (RemoteException rEx) {
-            System.out.println(rEx.getMessage());
             rEx.printStackTrace();
             return null;
         }

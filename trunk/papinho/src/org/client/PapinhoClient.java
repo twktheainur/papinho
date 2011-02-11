@@ -36,6 +36,7 @@ public class PapinhoClient implements PapinhoClientIface {
         try {
             server.sendMessage(msg);
         } catch (RemoteException rEx) {
+            rEx.printStackTrace();
             JOptionPane.showMessageDialog(view.getFrame(),
                     "Network Error",
                     rEx.getMessage(),
@@ -52,6 +53,7 @@ public class PapinhoClient implements PapinhoClientIface {
         try{
             server.addClient("Client_"+name);
         } catch(RemoteException rEx){
+            rEx.printStackTrace();
         }
     }
 
