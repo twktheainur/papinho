@@ -71,6 +71,7 @@ public class ConnectView extends javax.swing.JFrame {
         tfHost.setText(resourceMap.getString("tfHost.text")); // NOI18N
         tfHost.setName("tfHost"); // NOI18N
 
+        tfPort.setText(resourceMap.getString("tfPort.text")); // NOI18N
         tfPort.setName("tfPort"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
