@@ -110,6 +110,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="tfPort">
       <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="tfPort.text"/>
         <Property name="name" type="java.lang.String" value="tfPort" noResource="true"/>
       </Properties>
     </Component>
