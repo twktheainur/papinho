@@ -12,6 +12,7 @@ import java.util.Map;
 import org.client.PapinhoClientIface;
 import org.common.model.ChatMessage;
 import org.common.model.History;
+import org.common.model.SessionStatus;
 
 /**
  *
@@ -23,6 +24,7 @@ public class PapinhoServer implements PapinhoServerIface {
 
     public PapinhoServer(MainServer mainServer) {
         this.mainServer = mainServer;
+        sessionStatus = new SessionStatus();
     }
 
     private PapinhoClientIface getClientRef(String registeredName) {
@@ -43,21 +45,26 @@ public class PapinhoServer implements PapinhoServerIface {
     }
 
     public void sendMessage(ChatMessage msg) throws RemoteException {
-        System.out.println("<dispatching message='"+msg+"'>");
+        System.out.println("<dispatching message='" + msg + "'>");
         for (String client : clientList.keySet()) {
-            System.out.println("<client name='"+client+"'/>");
+            System.out.println("<client name='" + client + "'/>");
             clientList.get(client).receiveMessage(msg);
         }
+        sessionStatus.getHistory().appendMessage(msg);
         System.out.println("</dispatching>");
     }
 
-    public History addClient(String registeredName) {
-        PapinhoClientIface pci = getClientRef(registeredName);        
+    public SessionStatus addClient(String registeredName) {
+        PapinhoClientIface pci = getClientRef(registeredName);
         try {
             String name = pci.getName();
-            System.out.println("registering client.."+name);
+            System.out.println("registering client.." + name);
             clientList.put(registeredName, pci);
-            return new History();
+            sessionStatus.getNameList().add(name);
+            for (PapinhoClientIface client : clientList.values()) {
+                client.addClient(name);
+            }
+            return sessionStatus;
         } catch (RemoteException rEx) {
             rEx.printStackTrace();
             return null;
@@ -67,6 +74,7 @@ public class PapinhoServer implements PapinhoServerIface {
     public void removeClient(String registeredName) {
         try {
             clientList.remove(registeredName);
+            sessionStatus.getNameList().remove(clientList.get(registeredName).getName());
             for (PapinhoClientIface client : clientList.values()) {
                 client.removeClient(registeredName);
             }
@@ -75,5 +83,24 @@ public class PapinhoServer implements PapinhoServerIface {
             rEx.printStackTrace();
         }
     }
+
+    public void clientNameChange(String oldName, String newName) throws RemoteException {
+        for (String name : sessionStatus.getNameList()) {
+            if (name.equals(newName)) {
+                throw new RemoteException("Duplicate user name!");
+            }
+        }
+        try {
+            sessionStatus.getNameList().set(sessionStatus.getNameList().indexOf(oldName), newName);
+            for (PapinhoClientIface client : clientList.values()) {
+                client.changeClientName(oldName, newName);
+            }
+        } catch (RemoteException rEx) {
+            System.out.println(rEx.getMessage());
+            rEx.printStackTrace();
+        }
+
+    }
     private MainServer mainServer;
+    private SessionStatus sessionStatus;
 }

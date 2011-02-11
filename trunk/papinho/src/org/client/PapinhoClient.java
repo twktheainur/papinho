@@ -8,6 +8,7 @@ import java.rmi.RemoteException;
 import java.util.Random;
 import javax.swing.JOptionPane;
 import org.common.model.ChatMessage;
+import org.common.model.SessionStatus;
 import org.server.PapinhoServerIface;
 
 public class PapinhoClient implements PapinhoClientIface {
@@ -51,10 +52,22 @@ public class PapinhoClient implements PapinhoClientIface {
     public void setServer(PapinhoServerIface server) {
         this.server = server;
         try{
-            server.addClient("Client_"+name);
+            SessionStatus status = server.addClient("Client_"+name);
+            for(ChatMessage cm:status.getHistory().getMessages()){
+                view.appendMessage(cm);
+            }
+            for(String name:status.getNameList()){
+                if(!name.equals(this.name)){
+                    view.appendClient(name);
+                }
+            }
         } catch(RemoteException rEx){
             rEx.printStackTrace();
         }
+    }
+
+    public void changeClientName(String oldName, String newName){
+        view.changeUserName(oldName, newName);
     }
 
     public String getName() {

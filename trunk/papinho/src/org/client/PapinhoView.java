@@ -70,6 +70,14 @@ public class PapinhoView extends FrameView {
         model.add(model.getSize(),name);
     }
 
+    public void changeUserName(String oldName, String newName){
+        DefaultListModel model = (DefaultListModel)lUserList.getModel();
+        int i = model.indexOf(oldName);
+        if(i>0){
+            model.set(i, newName);
+        }
+    }
+
     public void removeClient(String name){
         DefaultListModel model = (DefaultListModel)lUserList.getModel();
         for(int i=0;i<model.getSize();i++){

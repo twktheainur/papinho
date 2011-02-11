@@ -119,6 +119,9 @@ public class ConnectView extends javax.swing.JFrame {
     private void bOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bOkActionPerformed
         String host = tfHost.getText();
         String port = tfPort.getText();
+        //String host = "127.0.0.1";
+        //String port = "8090";
+        
         PapinhoApp.getApplication().getRemoteServerObject(host, port);
         mainView.getmConnect().setVisible(false);
         mainView.getmDisconnect().setVisible(true);
