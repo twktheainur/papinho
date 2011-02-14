@@ -30,10 +30,11 @@ public class PapinhoApp extends SingleFrameApplication {
 
     public void getRemoteServerObject(String host, String port) {
         try {
-            Registry registry = LocateRegistry.getRegistry(host, Integer.valueOf(port));
+            registry = LocateRegistry.getRegistry(host, Integer.valueOf(port));
             PapinhoServerIface server = (PapinhoServerIface) registry.lookup("server");
             UnicastRemoteObject.exportObject(client, 0);
-            registry.bind("Client_"+client.getName(), client);
+            registeredName = "Client_"+client.getName();
+            registry.bind(registeredName, client);
             client.setServer(server);
         } catch (Exception e) {
             System.err.println("Error looking up the server: " + e);
@@ -43,8 +44,11 @@ public class PapinhoApp extends SingleFrameApplication {
 
     public void releaseRemoteServerObject() {
         try {
-            client.getServer().removeClient("Client_"+client.getName());
+            client.getServer().removeClient(registeredName);
             UnicastRemoteObject.unexportObject(client, true);
+            registry.unbind(registeredName);
+            registeredName = "";
+            view.purgeClientList();
         } catch (Exception e) {
             System.err.println("Error releasing the server: " + e);
             e.printStackTrace();
@@ -77,4 +81,6 @@ public class PapinhoApp extends SingleFrameApplication {
     }
     private PapinhoView view;
     private PapinhoClient client;
+    private Registry registry;
+    private String registeredName;
 }

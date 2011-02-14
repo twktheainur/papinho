@@ -1,25 +1,18 @@
-/*
- * PapinhoView.java
- */
-
 package org.client;
 
+import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import org.jdesktop.application.Action;
-import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
-import org.jdesktop.application.TaskMonitor;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.DefaultListModel;
-import javax.swing.Timer;
-import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import org.common.model.ChatMessage;
-import org.common.model.History;
 
 /**
  * The application's main frame.
@@ -32,6 +25,42 @@ public class PapinhoView extends FrameView {
         initComponents();
         bSend.setEnabled(false);
         mDisconnect.setVisible(false);
+        setTitle("Papinho");
+
+        getFrame().setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        getFrame().addWindowListener(new java.awt.event.WindowAdapter() {
+
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                mDisconnectActionPerformed(null);
+                PapinhoApp.getApplication().exit();
+            }
+        });
+
+        taInput.addKeyListener(new KeyListener() {
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    taInput.append("\n");
+                } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    bSendActionPerformed(null);
+                    e.setKeyCode(java.awt.event.KeyEvent.VK_UNDEFINED);
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
+    }
+
+    public final void setTitle(String title) {
+        getFrame().setTitle(title);
     }
 
     @Action
@@ -56,36 +85,43 @@ public class PapinhoView extends FrameView {
         return bSend;
     }
 
-    public void appendMessage(ChatMessage msg){
-        taOutput.append("<"+msg.getName()+"> "+msg.getMessage()+"\n");
+    public void appendMessage(ChatMessage msg) {
+        Random r = new Random();
+        taOutput.setForeground(new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255)));
+        taOutput.append(msg.toString());
+        taOutput.setForeground(Color.black);
     }
 
-    public void appendHistory(History hist){
-        //taOutput.append(hist.);
+    public void appendString(String str) {
+        taOutput.append(str);
     }
 
-
-    public void appendClient(String name){
-        DefaultListModel model = (DefaultListModel)lUserList.getModel();
-        model.add(model.getSize(),name);
+    public void appendClient(String name) {
+        DefaultListModel model = (DefaultListModel) lUserList.getModel();
+        model.addElement(name);
     }
 
-    public void changeUserName(String oldName, String newName){
-        DefaultListModel model = (DefaultListModel)lUserList.getModel();
+    public void changeUserName(String oldName, String newName) {
+        DefaultListModel model = (DefaultListModel) lUserList.getModel();
         int i = model.indexOf(oldName);
-        if(i>0){
+        if (i >= 0) {
             model.set(i, newName);
         }
     }
 
-    public void removeClient(String name){
-        DefaultListModel model = (DefaultListModel)lUserList.getModel();
-        for(int i=0;i<model.getSize();i++){
-          if(((String)model.get(i)).equals(name)){
-            model.remove(i);
-            break;
-          }
+    public void removeClient(String name) {
+        DefaultListModel model = (DefaultListModel) lUserList.getModel();
+        for (int i = 0; i < model.getSize(); i++) {
+            if (((String) model.get(i)).equals(name)) {
+                model.remove(i);
+                break;
+            }
         }
+    }
+
+    public void purgeClientList() {
+        DefaultListModel model = (DefaultListModel) lUserList.getModel();
+        model.clear();
     }
 
     public JMenuItem getmConnect() {
@@ -104,9 +140,6 @@ public class PapinhoView extends FrameView {
         this.mDisconnect = mDisconnect;
     }
 
-
-
-
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -121,7 +154,7 @@ public class PapinhoView extends FrameView {
         jSplitPane2 = new javax.swing.JSplitPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         taOutput = new javax.swing.JTextArea();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        spInputScroll = new javax.swing.JScrollPane();
         taInput = new javax.swing.JTextArea();
         jSplitPane3 = new javax.swing.JSplitPane();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -156,14 +189,15 @@ public class PapinhoView extends FrameView {
 
         jSplitPane2.setTopComponent(jScrollPane1);
 
-        jScrollPane2.setName("jScrollPane2"); // NOI18N
+        spInputScroll.setAutoscrolls(true);
+        spInputScroll.setName("spInputScroll"); // NOI18N
 
         taInput.setColumns(20);
         taInput.setRows(5);
         taInput.setName("taInput"); // NOI18N
-        jScrollPane2.setViewportView(taInput);
+        spInputScroll.setViewportView(taInput);
 
-        jSplitPane2.setRightComponent(jScrollPane2);
+        jSplitPane2.setRightComponent(spInputScroll);
 
         jSplitPane1.setLeftComponent(jSplitPane2);
 
@@ -174,7 +208,9 @@ public class PapinhoView extends FrameView {
         jScrollPane3.setName("jScrollPane3"); // NOI18N
 
         lUserList.setModel(new DefaultListModel());
+        lUserList.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         lUserList.setName("lUserList"); // NOI18N
+        lUserList.setSelectedIndex(0);
         jScrollPane3.setViewportView(lUserList);
 
         jSplitPane3.setTopComponent(jScrollPane3);
@@ -264,8 +300,10 @@ public class PapinhoView extends FrameView {
     }//GEN-LAST:event_mConnectActionPerformed
 
     private void bSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSendActionPerformed
-       client.sendMessage(client.getName(),taInput.getText());
-       taInput.setText("");
+        if (taInput.getText().length() > 0) {
+            client.sendMessage(client.getName(), taInput.getText());
+            taInput.setText("");
+        }
     }//GEN-LAST:event_bSendActionPerformed
 
     private void mDisconnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mDisconnectActionPerformed
@@ -277,14 +315,12 @@ public class PapinhoView extends FrameView {
 }//GEN-LAST:event_mDisconnectActionPerformed
 
     private void mSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mSettingsActionPerformed
-        OptionsView ov = new OptionsView(client);
+        OptionsView ov = new OptionsView(client, this);
         ov.setVisible(true);
 }//GEN-LAST:event_mSettingsActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bSend;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
@@ -295,11 +331,10 @@ public class PapinhoView extends FrameView {
     private javax.swing.JMenuItem mSettings;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JScrollPane spInputScroll;
     private javax.swing.JTextArea taInput;
     private javax.swing.JTextArea taOutput;
     // End of variables declaration//GEN-END:variables
-
     private PapinhoClient client;
-
     private JDialog aboutBox;
 }

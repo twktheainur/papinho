@@ -1,21 +1,15 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.server;
 
+import java.io.File;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
-/**
- *
- * @author tchchmea
- */
 public class MainServer {
 
     private String host;
     private int port;
+    static public String historyFile = "messageHistoryLog.txt";
 
     public MainServer(String server, int port) {
         this.host = server;
