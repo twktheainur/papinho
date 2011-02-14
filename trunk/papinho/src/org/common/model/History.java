@@ -1,29 +1,21 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.common.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author tchchmea
- */
+
 public class History implements Serializable {
-    List<ChatMessage> messages;
+    List<Message> messages;
 
     public History() {
-        messages = new ArrayList<ChatMessage>();
+        messages = new ArrayList<Message>();
     }
-    public void appendMessage(ChatMessage msg){
+    public void appendMessage(Message msg){
         messages.add(messages.size(), msg);
     }
 
-    public List<ChatMessage> getMessages() {
+    public List<Message> getMessages() {
         return messages;
     }
 

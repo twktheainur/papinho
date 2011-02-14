@@ -1,28 +1,16 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
-/*
- * OptionsView.java
- *
- * Created on 10-Feb-2011, 16:53:54
- */
 package org.client;
 
 import java.rmi.RemoteException;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author twk
- */
 public class OptionsView extends javax.swing.JFrame {
 
     /** Creates new form OptionsView */
-    public OptionsView(PapinhoClient client) {
+    public OptionsView(PapinhoClient client,PapinhoView mv) {
         initComponents();
         this.client = client;
+        mainView = mv;
         tfUsername.setText(client.getName());
     }
 
@@ -109,7 +97,9 @@ public class OptionsView extends javax.swing.JFrame {
         String username = tfUsername.getText();
         if (username.length() > 0) {
             try {
-                client.getServer().clientNameChange(client.getName(), username);
+                if(client.getServer()!=null){
+                    client.getServer().clientNameChange(client.getName(), username);
+                }
                 client.setName(username);
             } catch (RemoteException rEx) {
                 JOptionPane.showMessageDialog(this,
@@ -126,6 +116,7 @@ public class OptionsView extends javax.swing.JFrame {
         }
 }//GEN-LAST:event_bOkActionPerformed
     private PapinhoClient client;
+    private PapinhoView mainView;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bCancel;
     private javax.swing.JButton bOk;

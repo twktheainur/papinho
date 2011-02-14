@@ -1,23 +1,24 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.server;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.HashMap;
 import java.util.Map;
+import javax.naming.event.NamespaceChangeListener;
 import org.client.PapinhoClientIface;
 import org.common.model.ChatMessage;
-import org.common.model.History;
 import org.common.model.SessionStatus;
+import org.common.model.UserJoinMessage;
+import org.common.model.UserLeftMessage;
+import org.common.model.UserNameChangeMessage;
 
-/**
- *
- * @author jander
- */
 public class PapinhoServer implements PapinhoServerIface {
 
     private Map<String, PapinhoClientIface> clientList = new HashMap<String, PapinhoClientIface>();
@@ -25,6 +26,40 @@ public class PapinhoServer implements PapinhoServerIface {
     public PapinhoServer(MainServer mainServer) {
         this.mainServer = mainServer;
         sessionStatus = new SessionStatus();
+        loadHistory(MainServer.historyFile);
+        try {
+            logWriter = new BufferedWriter(new FileWriter(MainServer.historyFile));
+        } catch (IOException ex) {
+            System.out.println("Impossible to open the history log file for writing");
+        }
+    }
+
+    private void loadHistory(String filename) {
+        try {
+            File log = new File(filename);
+            if (!log.exists()) {
+                log.createNewFile();
+            } else {
+                BufferedReader br = new BufferedReader(new FileReader(log));
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] message = line.split("\t");
+                    if(message[0].equals("msg")){
+                        sessionStatus.getHistory().appendMessage(new ChatMessage(message[1],message[2]));
+                    } else if(message[0].equals("join")){
+                        sessionStatus.getHistory().appendMessage(new UserJoinMessage(message[1]));
+                    } else if(message[0].equals("left")){
+                        sessionStatus.getHistory().appendMessage(new UserLeftMessage(message[1]));
+                    }else if(message[0].equals("name_change")){
+                        sessionStatus.getHistory().appendMessage(new UserNameChangeMessage(message[1], message[2]));
+                    }
+                }
+                br.close();
+            }
+        } catch (IOException fnfEx) {
+            System.out.println("Error while loading the log file...");
+            System.out.println(fnfEx.getMessage());
+        }
     }
 
     private PapinhoClientIface getClientRef(String registeredName) {
@@ -44,6 +79,7 @@ public class PapinhoServer implements PapinhoServerIface {
         }
     }
 
+    @Override
     public void sendMessage(ChatMessage msg) throws RemoteException {
         System.out.println("<dispatching message='" + msg + "'>");
         for (String client : clientList.keySet()) {
@@ -51,9 +87,18 @@ public class PapinhoServer implements PapinhoServerIface {
             clientList.get(client).receiveMessage(msg);
         }
         sessionStatus.getHistory().appendMessage(msg);
+        if (logWriter != null) {
+            try {
+                logWriter.write("msg\t" + msg.getName() + "\t" + msg.getMessage() + "\n");
+                logWriter.flush();
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
         System.out.println("</dispatching>");
     }
 
+    @Override
     public SessionStatus addClient(String registeredName) {
         PapinhoClientIface pci = getClientRef(registeredName);
         try {
@@ -64,6 +109,15 @@ public class PapinhoServer implements PapinhoServerIface {
             for (PapinhoClientIface client : clientList.values()) {
                 client.addClient(name);
             }
+            sessionStatus.getHistory().appendMessage(new UserJoinMessage(name));
+            if (logWriter != null) {
+                try {
+                    logWriter.write("join\t" + name + "\n");
+                    logWriter.flush();
+                } catch (IOException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
             return sessionStatus;
         } catch (RemoteException rEx) {
             rEx.printStackTrace();
@@ -71,19 +125,32 @@ public class PapinhoServer implements PapinhoServerIface {
         }
     }
 
+    @Override
     public void removeClient(String registeredName) {
         try {
-            clientList.remove(registeredName);
-            sessionStatus.getNameList().remove(clientList.get(registeredName).getName());
+
+            String name = clientList.get(registeredName).getName();
             for (PapinhoClientIface client : clientList.values()) {
-                client.removeClient(registeredName);
+                client.removeClient(name);
             }
+            sessionStatus.getHistory().appendMessage(new UserLeftMessage(name));
+            if (logWriter != null) {
+                try {
+                    logWriter.write("left\t" + name + "\n");
+                    logWriter.flush();
+                } catch (IOException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
+            sessionStatus.getNameList().remove(name);
+            clientList.remove(registeredName);
         } catch (RemoteException rEx) {
             System.out.println(rEx.getMessage());
             rEx.printStackTrace();
         }
     }
 
+    @Override
     public void clientNameChange(String oldName, String newName) throws RemoteException {
         for (String name : sessionStatus.getNameList()) {
             if (name.equals(newName)) {
@@ -95,12 +162,22 @@ public class PapinhoServer implements PapinhoServerIface {
             for (PapinhoClientIface client : clientList.values()) {
                 client.changeClientName(oldName, newName);
             }
+            sessionStatus.getHistory().appendMessage(new UserNameChangeMessage(oldName, newName));
+            if (logWriter != null) {
+                try {
+                    logWriter.write("name_change\t" + oldName+"\t"+ newName + "\n");
+                    logWriter.flush();
+                } catch (IOException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
         } catch (RemoteException rEx) {
             System.out.println(rEx.getMessage());
             rEx.printStackTrace();
         }
 
     }
+    private BufferedWriter logWriter;
     private MainServer mainServer;
     private SessionStatus sessionStatus;
 }

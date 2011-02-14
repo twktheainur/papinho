@@ -1,22 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * ConnectView.java
- *
- * Created on 8 févr. 2011, 11:40:18
- */
 
 package org.client;
 
-import org.jdesktop.application.Action;
 
-/**
- *
- * @author tchchmea
- */
+
 public class ConnectView extends javax.swing.JFrame {
 
     /** Creates new form ConnectView */
@@ -119,8 +105,6 @@ public class ConnectView extends javax.swing.JFrame {
     private void bOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bOkActionPerformed
         String host = tfHost.getText();
         String port = tfPort.getText();
-        //String host = "127.0.0.1";
-        //String port = "8090";
         
         PapinhoApp.getApplication().getRemoteServerObject(host, port);
         mainView.getmConnect().setVisible(false);
