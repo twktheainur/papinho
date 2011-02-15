@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.server;
+package org.common.interfaces;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

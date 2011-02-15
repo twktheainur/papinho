@@ -1,5 +1,6 @@
 package org.client;
 
+import org.common.interfaces.PapinhoClientIface;
 import org.common.model.MessageType;
 import java.rmi.RemoteException;
 import java.util.Random;
@@ -8,7 +9,7 @@ import org.common.model.ChatMessage;
 import org.common.model.Message;
 import org.common.model.SessionStatus;
 import org.common.model.UserJoinMessage;
-import org.server.PapinhoServerIface;
+import org.common.interfaces.PapinhoServerIface;
 
 public class PapinhoClient implements PapinhoClientIface {
 

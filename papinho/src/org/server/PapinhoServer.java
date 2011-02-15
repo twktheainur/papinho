@@ -1,5 +1,6 @@
 package org.server;
 
+import org.common.interfaces.PapinhoServerIface;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,7 +13,7 @@ import java.rmi.registry.Registry;
 import java.util.HashMap;
 import java.util.Map;
 import javax.naming.event.NamespaceChangeListener;
-import org.client.PapinhoClientIface;
+import org.common.interfaces.PapinhoClientIface;
 import org.common.model.ChatMessage;
 import org.common.model.SessionStatus;
 import org.common.model.UserJoinMessage;
