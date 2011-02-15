@@ -72,13 +72,13 @@ public class PapinhoApp extends SingleFrameApplication {
     public static PapinhoApp getApplication() {
         return Application.getInstance(PapinhoApp.class);
     }
-
     /**
      * Main method launching the application.
      */
     public static void main(String[] args) {
         launch(PapinhoApp.class, args);
     }
+
     private PapinhoView view;
     private PapinhoClient client;
     private Registry registry;

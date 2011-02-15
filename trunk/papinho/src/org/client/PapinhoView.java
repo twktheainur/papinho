@@ -1,6 +1,7 @@
 package org.client;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Random;
@@ -12,6 +13,11 @@ import org.jdesktop.application.FrameView;
 import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 import org.common.model.ChatMessage;
 
 /**
@@ -87,22 +93,45 @@ public class PapinhoView extends FrameView {
 
     public void appendMessage(ChatMessage msg) {
         Random r = new Random();
-        taOutput.setForeground(new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255)));
-        taOutput.append(msg.toString());
-        taOutput.setForeground(Color.black);
+        appendString("<");
+        appendString(msg.getName(),msg.getName());
+        appendString("> ");
+        appendString(msg.getMessage()+"\n");
     }
 
     public void appendString(String str) {
-        taOutput.append(str);
+        appendString(StyleContext.DEFAULT_STYLE, str);
+    }
+
+    public void appendString(String styleName, String str) {
+        try {
+            Style style = taOutput.getStyle(styleName);
+            Document doc = taOutput.getDocument();
+            doc.insertString(doc.getLength(), str, style);
+            //taOutput.setCaretPosition(doc.getLength());
+            //taOutput.setCharacterAttributes(style, true);
+            //taOutput.replaceSelection(str);
+            Rectangle r = taOutput.modelToView(doc.getLength());
+            if(r!=null){
+                taOutput.scrollRectToVisible(r);
+            }
+        } catch (BadLocationException blex) {
+            System.out.println(blex.getMessage());
+        }
     }
 
     public void appendClient(String name) {
         DefaultListModel model = (DefaultListModel) lUserList.getModel();
         model.addElement(name);
+        Random r = new Random();
+        Style style = taOutput.addStyle(name, null);
+        StyleConstants.setForeground(style, new Color(r.nextInt(255),r.nextInt(255),r.nextInt(255)));
     }
 
     public void changeUserName(String oldName, String newName) {
         DefaultListModel model = (DefaultListModel) lUserList.getModel();
+        Style oldStyle = taOutput.getStyle(oldName);
+        taOutput.addStyle(newName,oldStyle);
         int i = model.indexOf(oldName);
         if (i >= 0) {
             model.set(i, newName);
@@ -111,6 +140,7 @@ public class PapinhoView extends FrameView {
 
     public void removeClient(String name) {
         DefaultListModel model = (DefaultListModel) lUserList.getModel();
+        taOutput.removeStyle(name);
         for (int i = 0; i < model.getSize(); i++) {
             if (((String) model.get(i)).equals(name)) {
                 model.remove(i);
@@ -153,7 +183,7 @@ public class PapinhoView extends FrameView {
         jSplitPane1 = new javax.swing.JSplitPane();
         jSplitPane2 = new javax.swing.JSplitPane();
         jScrollPane1 = new javax.swing.JScrollPane();
-        taOutput = new javax.swing.JTextArea();
+        taOutput = new javax.swing.JTextPane();
         spInputScroll = new javax.swing.JScrollPane();
         taInput = new javax.swing.JTextArea();
         jSplitPane3 = new javax.swing.JSplitPane();
@@ -180,10 +210,7 @@ public class PapinhoView extends FrameView {
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
-        taOutput.setColumns(20);
         taOutput.setEditable(false);
-        taOutput.setRows(5);
-        taOutput.setWrapStyleWord(true);
         taOutput.setName("taOutput"); // NOI18N
         jScrollPane1.setViewportView(taOutput);
 
@@ -333,7 +360,7 @@ public class PapinhoView extends FrameView {
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JScrollPane spInputScroll;
     private javax.swing.JTextArea taInput;
-    private javax.swing.JTextArea taOutput;
+    private javax.swing.JTextPane taOutput;
     // End of variables declaration//GEN-END:variables
     private PapinhoClient client;
     private JDialog aboutBox;

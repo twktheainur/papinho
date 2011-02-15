@@ -9,7 +9,7 @@ public class UserNameChangeMessage extends Message implements Remote, Serializab
     String newName;
 
     public UserNameChangeMessage(String oldName, String newName) {
-        super(MessageType.getUserJoinedTypeInstance());
+        super(MessageType.getNameChangeTypeInstance());
         this.oldName = oldName;
         this.newName = newName;
     }
