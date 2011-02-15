@@ -6,7 +6,7 @@ package org.client;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
 
-import org.server.PapinhoServerIface;
+import org.common.interfaces.PapinhoServerIface;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;

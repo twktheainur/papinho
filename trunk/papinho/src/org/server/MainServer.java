@@ -1,5 +1,6 @@
 package org.server;
 
+import org.common.interfaces.PapinhoServerIface;
 import java.io.File;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;

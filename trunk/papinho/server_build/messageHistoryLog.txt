@@ -1,0 +1,51 @@
+join	User2119896391
+msg	User2119896391	fdg
+msg	User2119896391	dfg
+msg	User2119896391	fdsg
+msg	User2119896391	df
+msg	User2119896391	g
+msg	User2119896391	dfg
+msg	User2119896391	d
+msg	User2119896391	fg
+msg	User2119896391	df
+msg	User2119896391	g
+msg	User2119896391	df
+msg	User2119896391	g
+msg	User2119896391	h
+msg	User2119896391	hdfh
+msg	User2119896391	d
+msg	User2119896391	f
+msg	User2119896391	h
+msg	User2119896391	df
+msg	User2119896391	h
+msg	User2119896391	d
+msg	User2119896391	fh
+msg	User2119896391	df
+msg	User2119896391	h
+msg	User2119896391	df
+msg	User2119896391	hd
+msg	User2119896391	fh
+msg	User2119896391	def
+msg	User2119896391	h
+msg	User2119896391	d
+left	User2119896391
+join	User323946454
+msg	User323946454	Hello
+msg	User323946454	There
+msg	User323946454	friends!
+msg	User323946454	Ha!
+msg	User323946454	perfect!
+join	User79523475
+msg	User79523475	Yes you are right! It is perfect indeed!!!
+msg	User79523475	IT's verry fucking sweet dude, no classes for the whole afternoon!!!!! What could one expect better than this?!
+msg	User79523475	Ho!
+msg	User323946454	Ho yourself bitch!
+join	User187759934
+msg	User187759934	Ok daddy pimp is in the place!
+msg	User187759934	Shut up bitches!
+msg	User323946454	Whatcha sayn' you motherfunckin' dick?
+msg	User79523475	Yeah go fuck yourself!!!!!
+msg	User187759934	Fullscreen fun!!!!
+left	User187759934
+left	User323946454
+left	User79523475

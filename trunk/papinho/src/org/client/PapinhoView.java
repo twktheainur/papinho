@@ -94,9 +94,9 @@ public class PapinhoView extends FrameView {
     public void appendMessage(ChatMessage msg) {
         Random r = new Random();
         appendString("<");
-        appendString(msg.getName(),msg.getName());
+        appendString(msg.getName(), msg.getName());
         appendString("> ");
-        appendString(msg.getMessage()+"\n");
+        appendString(msg.getMessage() + "\n");
     }
 
     public void appendString(String str) {
@@ -108,13 +108,14 @@ public class PapinhoView extends FrameView {
             Style style = taOutput.getStyle(styleName);
             Document doc = taOutput.getDocument();
             doc.insertString(doc.getLength(), str, style);
-            //taOutput.setCaretPosition(doc.getLength());
+            taOutput.setCaretPosition(doc.getLength());
             //taOutput.setCharacterAttributes(style, true);
             //taOutput.replaceSelection(str);
-            Rectangle r = taOutput.modelToView(doc.getLength());
-            if(r!=null){
-                taOutput.scrollRectToVisible(r);
-            }
+            //     Rectangle r = taOutput.modelToView(doc.getLength());
+            //    if(r!=null){
+            //       taOutput.scrollRectToVisible(r);
+            //  }
+            
         } catch (BadLocationException blex) {
             System.out.println(blex.getMessage());
         }
@@ -125,13 +126,13 @@ public class PapinhoView extends FrameView {
         model.addElement(name);
         Random r = new Random();
         Style style = taOutput.addStyle(name, null);
-        StyleConstants.setForeground(style, new Color(r.nextInt(255),r.nextInt(255),r.nextInt(255)));
+        StyleConstants.setForeground(style, new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255)));
     }
 
     public void changeUserName(String oldName, String newName) {
         DefaultListModel model = (DefaultListModel) lUserList.getModel();
         Style oldStyle = taOutput.getStyle(oldName);
-        taOutput.addStyle(newName,oldStyle);
+        taOutput.addStyle(newName, oldStyle);
         int i = model.indexOf(oldName);
         if (i >= 0) {
             model.set(i, newName);
