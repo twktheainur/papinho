@@ -101,10 +101,6 @@ public class PapinhoServer implements PapinhoServerIface {
 
     public void sendMessage(ChatMessage msg, String to) throws RemoteException {
         System.out.println("<dispatching message='" + msg + "' type='private' to='"+to+"'/>");
-        for (String client : clientList.keySet()) {
-            System.out.println("<client name='" + client + "'/>");
-            clientList.get(client).receiveMessage(msg);
-        }
         PapinhoClientIface recipient = null;
         for(PapinhoClientIface client: clientList.values()){
             if(client.getName().equals(to)){

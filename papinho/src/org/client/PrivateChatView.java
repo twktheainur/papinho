@@ -23,8 +23,7 @@ import javax.swing.text.Style;
 public class PrivateChatView extends javax.swing.JFrame {
 
     /** Creates new form PrivateChatView */
-    public PrivateChatView(String from, String to, PapinhoClient client, PapinhoView view) {
-        this.from = from;
+    public PrivateChatView(String to, PapinhoClient client, PapinhoView view) {
         this.to = to;
         this.client = client;
         this.mainView = view;
@@ -132,7 +131,7 @@ public class PrivateChatView extends javax.swing.JFrame {
 
     public void appendString(String styleName, String str) {
         try {
-            Style style = taOutput.getStyle(styleName);
+            Style style = mainView.getTaOutput().getStyle(styleName);
             Document doc = taOutput.getDocument();
             doc.insertString(doc.getLength(), str, style);
             taOutput.setCaretPosition(doc.getLength());
@@ -159,9 +158,14 @@ public class PrivateChatView extends javax.swing.JFrame {
     }//GEN-LAST:event_taInputKeyPressed
 
     private void bSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSendActionPerformed
-            if (taInput.getText().length() > 0) {
-            client.sendMessage(client.getName(), taInput.getText(),to);
+        if (taInput.getText().length() > 0) {
+            client.sendMessage(client.getName(), taInput.getText(), to);
+            appendString("<");
+            appendString(client.getName(), client.getName());
+            appendString("> ");
+            appendString(taInput.getText() + "\n");
             taInput.setText("");
+            bSend.setEnabled(false);
         }
     }//GEN-LAST:event_bSendActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -173,7 +177,6 @@ public class PrivateChatView extends javax.swing.JFrame {
     private javax.swing.JTextArea taInput;
     private javax.swing.JTextPane taOutput;
     // End of variables declaration//GEN-END:variables
-    private String from;
     private String to;
     private PapinhoClient client;
     private PapinhoView mainView;

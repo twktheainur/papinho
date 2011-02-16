@@ -27,7 +27,7 @@ public class PapinhoClient implements PapinhoClientIface {
     }
 
     public void receivePrivateMessage(ChatMessage msg) {
-        view.appendMessage(msg);
+        view.appendPrivateMessage(msg, msg.getName());
     }
 
     @Override

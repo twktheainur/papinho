@@ -1,6 +1,4 @@
-join	Bob
-join	Alice
-msg	Alice	Hey
-msg	Bob	What's up!
-msg	Bob	Hello
-msg	Alice	Plop
+join	User1240857414
+join	User773959465
+left	User773959465
+left	User1240857414
