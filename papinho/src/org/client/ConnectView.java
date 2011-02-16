@@ -109,7 +109,7 @@ public class ConnectView extends javax.swing.JFrame {
         PapinhoApp.getApplication().getRemoteServerObject(host, port);
         mainView.getmConnect().setVisible(false);
         mainView.getmDisconnect().setVisible(true);
-        mainView.getbSend().setEnabled(true);
+        mainView.getTaInput().setEnabled(true);
         dispose();
     }//GEN-LAST:event_bOkActionPerformed
 

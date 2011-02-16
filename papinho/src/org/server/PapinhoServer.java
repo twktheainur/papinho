@@ -45,13 +45,13 @@ public class PapinhoServer implements PapinhoServerIface {
                 String line;
                 while ((line = br.readLine()) != null) {
                     String[] message = line.split("\t");
-                    if(message[0].equals("msg")){
-                        sessionStatus.getHistory().appendMessage(new ChatMessage(message[1],message[2]));
-                    } else if(message[0].equals("join")){
+                    if (message[0].equals("msg")) {
+                        sessionStatus.getHistory().appendMessage(new ChatMessage(message[1], message[2]));
+                    } else if (message[0].equals("join")) {
                         sessionStatus.getHistory().appendMessage(new UserJoinMessage(message[1]));
-                    } else if(message[0].equals("left")){
+                    } else if (message[0].equals("left")) {
                         sessionStatus.getHistory().appendMessage(new UserLeftMessage(message[1]));
-                    }else if(message[0].equals("name_change")){
+                    } else if (message[0].equals("name_change")) {
                         sessionStatus.getHistory().appendMessage(new UserNameChangeMessage(message[1], message[2]));
                     }
                 }
@@ -97,6 +97,35 @@ public class PapinhoServer implements PapinhoServerIface {
             }
         }
         System.out.println("</dispatching>");
+    }
+
+    public void sendMessage(ChatMessage msg, String to) throws RemoteException {
+        System.out.println("<dispatching message='" + msg + "' type='private' to='"+to+"'/>");
+        for (String client : clientList.keySet()) {
+            System.out.println("<client name='" + client + "'/>");
+            clientList.get(client).receiveMessage(msg);
+        }
+        PapinhoClientIface recipient = null;
+        for(PapinhoClientIface client: clientList.values()){
+            if(client.getName().equals(to)){
+                recipient = client;
+                break;
+            }
+        }
+        if(recipient!=null){
+            recipient.receivePrivateMessage(msg);
+        } else {
+            throw new RemoteException("Recipient is not connected!");
+        }
+        /*sessionStatus.getHistory().appendMessage(msg);
+        if (logWriter != null) {
+            try {
+                logWriter.write("msg\t" + msg.getName() + "\t" + msg.getMessage() + "\n");
+                logWriter.flush();
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }*/
     }
 
     @Override
@@ -166,7 +195,7 @@ public class PapinhoServer implements PapinhoServerIface {
             sessionStatus.getHistory().appendMessage(new UserNameChangeMessage(oldName, newName));
             if (logWriter != null) {
                 try {
-                    logWriter.write("name_change\t" + oldName+"\t"+ newName + "\n");
+                    logWriter.write("name_change\t" + oldName + "\t" + newName + "\n");
                     logWriter.flush();
                 } catch (IOException ex) {
                     System.out.println(ex.getMessage());
