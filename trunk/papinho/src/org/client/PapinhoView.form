@@ -78,9 +78,13 @@
                     <Component class="javax.swing.JTextArea" name="taInput">
                       <Properties>
                         <Property name="columns" type="int" value="20"/>
-                        <Property name="rows" type="int" value="5"/>
+                        <Property name="lineWrap" type="boolean" value="true"/>
                         <Property name="name" type="java.lang.String" value="taInput" noResource="true"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="taInputKeyPressed"/>
+                        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="taInputKeyReleased"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -123,6 +127,10 @@
                         <Property name="name" type="java.lang.String" value="lUserList" noResource="true"/>
                         <Property name="selectedIndex" type="int" value="0"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lUserListMousePressed"/>
+                        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lUserListMouseReleased"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>

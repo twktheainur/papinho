@@ -26,6 +26,10 @@ public class PapinhoClient implements PapinhoClientIface {
         view.appendMessage(msg);
     }
 
+    public void receivePrivateMessage(ChatMessage msg) {
+        view.appendMessage(msg);
+    }
+
     @Override
     public void addClient(String name) {
         view.appendClient(name);
@@ -43,6 +47,19 @@ public class PapinhoClient implements PapinhoClientIface {
         ChatMessage msg = new ChatMessage(name, message);
         try {
             server.sendMessage(msg);
+        } catch (RemoteException rEx) {
+            rEx.printStackTrace();
+            JOptionPane.showMessageDialog(view.getFrame(),
+                    "Network Error",
+                    rEx.getMessage(),
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+        public void sendMessage(String name, String message,String to) {
+        ChatMessage msg = new ChatMessage(name, message);
+        try {
+            server.sendMessage(msg,to);
         } catch (RemoteException rEx) {
             rEx.printStackTrace();
             JOptionPane.showMessageDialog(view.getFrame(),

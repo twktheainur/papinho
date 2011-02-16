@@ -4,15 +4,20 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
+import javax.swing.JTextArea;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
 import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JPopupMenu;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.Style;
@@ -33,6 +38,8 @@ public class PapinhoView extends FrameView {
         mDisconnect.setVisible(false);
         setTitle("Papinho");
 
+        privateChats = new HashMap<String, JFrame>();
+
         getFrame().setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         getFrame().addWindowListener(new java.awt.event.WindowAdapter() {
 
@@ -40,27 +47,6 @@ public class PapinhoView extends FrameView {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 mDisconnectActionPerformed(null);
                 PapinhoApp.getApplication().exit();
-            }
-        });
-
-        taInput.addKeyListener(new KeyListener() {
-
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    taInput.append("\n");
-                } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    bSendActionPerformed(null);
-                    e.setKeyCode(java.awt.event.KeyEvent.VK_UNDEFINED);
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
             }
         });
     }
@@ -109,13 +95,6 @@ public class PapinhoView extends FrameView {
             Document doc = taOutput.getDocument();
             doc.insertString(doc.getLength(), str, style);
             taOutput.setCaretPosition(doc.getLength());
-            //taOutput.setCharacterAttributes(style, true);
-            //taOutput.replaceSelection(str);
-            //     Rectangle r = taOutput.modelToView(doc.getLength());
-            //    if(r!=null){
-            //       taOutput.scrollRectToVisible(r);
-            //  }
-            
         } catch (BadLocationException blex) {
             System.out.println(blex.getMessage());
         }
@@ -171,6 +150,42 @@ public class PapinhoView extends FrameView {
         this.mDisconnect = mDisconnect;
     }
 
+    public JTextArea getTaInput() {
+        return taInput;
+    }
+
+    private void ShowUlistPopup(java.awt.event.MouseEvent e) {
+        if (e.isPopupTrigger()) {
+            lUserList.setSelectedIndex(lUserList.locationToIndex(e.getPoint()));
+            if (!lUserList.getSelectedValue().toString().equals(client.getName())) {
+                JPopupMenu popup = new JPopupMenu();
+                final String to = lUserList.getSelectedValue().toString();
+                JMenuItem menuItem = new JMenuItem("Initiate a private chat with "
+                        + to);
+                menuItem.setMnemonic('p');
+                menuItem.addActionListener(new java.awt.event.ActionListener() {
+
+                    public void actionPerformed(java.awt.event.ActionEvent e) {
+                        appendString("Opening a private chat window with"
+                                + lUserList.getSelectedValue() + "\n");
+                        JFrame pcf = privateChats.get(to);
+                        if (pcf == null) {
+                            pcf = new PrivateChatView(client.getName(), to, client, getSelf());
+                            privateChats.put(to, pcf);
+                            pcf.setVisible(true);
+                        }
+                        pcf.setVisible(true);
+                        pcf.toFront();
+                        pcf.setState(JFrame.NORMAL);
+
+                    }
+                });
+                popup.add(menuItem);
+                popup.show(lUserList, e.getX(), e.getY());
+            }
+        }
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -221,8 +236,16 @@ public class PapinhoView extends FrameView {
         spInputScroll.setName("spInputScroll"); // NOI18N
 
         taInput.setColumns(20);
-        taInput.setRows(5);
+        taInput.setLineWrap(true);
         taInput.setName("taInput"); // NOI18N
+        taInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                taInputKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                taInputKeyReleased(evt);
+            }
+        });
         spInputScroll.setViewportView(taInput);
 
         jSplitPane2.setRightComponent(spInputScroll);
@@ -239,6 +262,14 @@ public class PapinhoView extends FrameView {
         lUserList.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         lUserList.setName("lUserList"); // NOI18N
         lUserList.setSelectedIndex(0);
+        lUserList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lUserListMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                lUserListMouseReleased(evt);
+            }
+        });
         jScrollPane3.setViewportView(lUserList);
 
         jSplitPane3.setTopComponent(jScrollPane3);
@@ -322,6 +353,10 @@ public class PapinhoView extends FrameView {
         setMenuBar(menuBar);
     }// </editor-fold>//GEN-END:initComponents
 
+    private PapinhoView getSelf() {
+        return this;
+    }
+
     private void mConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mConnectActionPerformed
         ConnectView cv = new ConnectView(this);
         cv.setVisible(true);
@@ -340,12 +375,43 @@ public class PapinhoView extends FrameView {
         taInput.setText("");
         mDisconnect.setVisible(false);
         mConnect.setVisible(true);
+        taInput.setEnabled(false);
+        bSend.setEnabled(false);
+        for(JFrame frame:privateChats.values()){
+            frame.dispose();
+        }
+        privateChats.clear();
 }//GEN-LAST:event_mDisconnectActionPerformed
 
     private void mSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mSettingsActionPerformed
         OptionsView ov = new OptionsView(client, this);
         ov.setVisible(true);
 }//GEN-LAST:event_mSettingsActionPerformed
+
+    private void taInputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_taInputKeyReleased
+        if (this.taInput.getText().length() == 0) {
+            bSend.setEnabled(false);//le bouton envoyer devient grise
+        } else {
+            bSend.setEnabled(true);
+        }
+    }//GEN-LAST:event_taInputKeyReleased
+
+    private void taInputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_taInputKeyPressed
+        if (evt.isControlDown() && evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            taInput.append("\n");
+        } else if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            bSendActionPerformed(null);
+            evt.setKeyCode(java.awt.event.KeyEvent.VK_UNDEFINED);
+        }
+    }//GEN-LAST:event_taInputKeyPressed
+
+    private void lUserListMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lUserListMousePressed
+        ShowUlistPopup(evt);
+    }//GEN-LAST:event_lUserListMousePressed
+
+    private void lUserListMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lUserListMouseReleased
+        ShowUlistPopup(evt);
+    }//GEN-LAST:event_lUserListMouseReleased
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bSend;
     private javax.swing.JScrollPane jScrollPane1;
@@ -365,4 +431,5 @@ public class PapinhoView extends FrameView {
     // End of variables declaration//GEN-END:variables
     private PapinhoClient client;
     private JDialog aboutBox;
+    private Map<String, JFrame> privateChats;
 }
