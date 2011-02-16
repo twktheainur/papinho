@@ -10,6 +10,7 @@ import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
@@ -38,7 +39,7 @@ public class PapinhoView extends FrameView {
         mDisconnect.setVisible(false);
         setTitle("Papinho");
 
-        privateChats = new HashMap<String, JFrame>();
+        privateChats = new HashMap<String, PrivateChatView>();
 
         getFrame().setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         getFrame().addWindowListener(new java.awt.event.WindowAdapter() {
@@ -78,11 +79,18 @@ public class PapinhoView extends FrameView {
     }
 
     public void appendMessage(ChatMessage msg) {
-        Random r = new Random();
         appendString("<");
         appendString(msg.getName(), msg.getName());
         appendString("> ");
         appendString(msg.getMessage() + "\n");
+    }
+
+    public void appendPrivateMessage(ChatMessage msg, String to) {
+        PrivateChatView pc = getPrivateChatFrame(to);
+        pc.appendString("<");
+        pc.appendString(msg.getName(), msg.getName());
+        pc.appendString("> ");
+        pc.appendString(msg.getMessage() + "\n");
     }
 
     public void appendString(String str) {
@@ -154,6 +162,35 @@ public class PapinhoView extends FrameView {
         return taInput;
     }
 
+    public JTextPane getTaOutput() {
+        return taOutput;
+    }
+
+    
+
+    /**
+     * 
+     * @param user The name of the user the private chat is with
+     * @return A reference to the PrivateChatView that corresponds to the private chat with user
+     */
+    public PrivateChatView getPrivateChatFrame(String user) {
+        PrivateChatView pcf = privateChats.get(user);
+        boolean isNew = false;
+        if (pcf == null) {
+            pcf = new PrivateChatView(user, client, getSelf());
+            privateChats.put(user, pcf);
+            isNew = true;
+        }
+        /*If the frame did not exist or if it was not visible, it is displayed and
+        focussed*/
+        if (isNew || !pcf.isVisible()) {
+            pcf.setVisible(true);
+            pcf.toFront();
+            pcf.setState(JFrame.NORMAL);
+        }
+        return pcf;
+    }
+
     private void ShowUlistPopup(java.awt.event.MouseEvent e) {
         if (e.isPopupTrigger()) {
             lUserList.setSelectedIndex(lUserList.locationToIndex(e.getPoint()));
@@ -168,16 +205,7 @@ public class PapinhoView extends FrameView {
                     public void actionPerformed(java.awt.event.ActionEvent e) {
                         appendString("Opening a private chat window with"
                                 + lUserList.getSelectedValue() + "\n");
-                        JFrame pcf = privateChats.get(to);
-                        if (pcf == null) {
-                            pcf = new PrivateChatView(client.getName(), to, client, getSelf());
-                            privateChats.put(to, pcf);
-                            pcf.setVisible(true);
-                        }
-                        pcf.setVisible(true);
-                        pcf.toFront();
-                        pcf.setState(JFrame.NORMAL);
-
+                        getPrivateChatFrame(to);
                     }
                 });
                 popup.add(menuItem);
@@ -377,7 +405,7 @@ public class PapinhoView extends FrameView {
         mConnect.setVisible(true);
         taInput.setEnabled(false);
         bSend.setEnabled(false);
-        for(JFrame frame:privateChats.values()){
+        for (JFrame frame : privateChats.values()) {
             frame.dispose();
         }
         privateChats.clear();
@@ -431,5 +459,5 @@ public class PapinhoView extends FrameView {
     // End of variables declaration//GEN-END:variables
     private PapinhoClient client;
     private JDialog aboutBox;
-    private Map<String, JFrame> privateChats;
+    private Map<String, PrivateChatView> privateChats;
 }
