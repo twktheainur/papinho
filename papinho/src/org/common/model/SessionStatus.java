@@ -3,6 +3,7 @@ package org.common.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import org.common.persistence.impl.DataSourceProxy;
 
 
 public class SessionStatus implements Serializable{
@@ -11,7 +12,7 @@ public class SessionStatus implements Serializable{
 
     public SessionStatus() {
         nameList = new ArrayList<String>();
-        history  = new History();
+        history  = new History(DataSourceProxy.getInstance().getDataSource());
     }
 
     public History getHistory() {
