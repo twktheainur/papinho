@@ -3,20 +3,21 @@ package org.common.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import org.common.persistence.DataSource;
 
 
 public class History implements Serializable {
-    List<Message> messages;
+    DataSource ds;
 
-    public History() {
-        messages = new ArrayList<Message>();
+    public History(DataSource ds) {
+        this.ds=ds;
     }
     public void appendMessage(Message msg){
-        messages.add(messages.size(), msg);
+        ds.persistMessage(msg);
     }
 
     public List<Message> getMessages() {
-        return messages;
+        return ds.listMessages();
     }
 
     
