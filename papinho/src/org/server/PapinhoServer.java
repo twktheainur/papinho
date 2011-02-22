@@ -33,7 +33,7 @@ public class PapinhoServer implements PapinhoServerIface {
 
         try {
             if (System.getSecurityManager() == null) {
-                //System.setSecurityManager(new SecurityManager());
+                System.setSecurityManager(new SecurityManager());
             }
 
             Registry registry = LocateRegistry.getRegistry(mainServer.getHost(), mainServer.getPort());
