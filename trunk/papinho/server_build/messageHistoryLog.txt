@@ -1,4 +1,0 @@
-join	User1966108061
-join	User1365142302
-left	User1966108061
-left	User1365142302
