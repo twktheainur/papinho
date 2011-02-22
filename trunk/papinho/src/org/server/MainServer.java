@@ -2,6 +2,7 @@ package org.server;
 
 import org.common.interfaces.PapinhoServerIface;
 import java.io.File;
+import java.rmi.Remote;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
@@ -22,9 +23,9 @@ public class MainServer {
     public void start() {
         try {
             PapinhoServerIface psi = new PapinhoServer(this);
-            UnicastRemoteObject.exportObject(psi, 0);
+            Remote stub = UnicastRemoteObject.exportObject(psi, 0);
             registry = LocateRegistry.getRegistry(this.host, this.port);
-            registry.bind("server", psi);
+            registry.bind("server", stub);
             Runtime.getRuntime().addShutdownHook(new ShutdownHook("server",psi,registry));
             System.out.println("Server started");
         } catch (Exception e) {
@@ -35,7 +36,6 @@ public class MainServer {
     }
 
     public static void main(String... args) {
-
         String default_host="127.0.0.1";
         int default_port=8090;
         if(args.length==0){
@@ -49,7 +49,7 @@ public class MainServer {
 
         System.out.println("Starting the server in host:"+default_host+" port:"+default_port);
         
-        MainServer ms = new MainServer(default_host, default_port);
+        MainServer ms = new MainServer(default_host, default_port); 
         ms.start();
     }
 

@@ -13,6 +13,7 @@ import java.rmi.registry.Registry;
 import java.util.HashMap;
 import java.util.Map;
 import javax.naming.event.NamespaceChangeListener;
+import java.rmi.Remote;
 import org.common.interfaces.PapinhoClientIface;
 import org.common.model.ChatMessage;
 import org.common.model.SessionStatus;
@@ -91,12 +92,12 @@ public class PapinhoServer implements PapinhoServerIface {
     }
 
     @Override
-    public SessionStatus addClient(String registeredName) {
-        PapinhoClientIface pci = getClientRef(registeredName);
+    public SessionStatus addClient(String name,Remote stub) {
+        //PapinhoClientIface pci = getClientRef(registeredName);
         try {
-            String name = pci.getName();
+            
             System.out.println("registering client.." + name);
-            clientList.put(registeredName, pci);
+            clientList.put(name, (PapinhoClientIface)stub);
             sessionStatus.getNameList().add(name);
             for (PapinhoClientIface client : clientList.values()) {
                 client.addClient(name);
@@ -118,10 +119,9 @@ public class PapinhoServer implements PapinhoServerIface {
     }
 
     @Override
-    public void removeClient(String registeredName) {
+    public void removeClient(String name) {
         try {
 
-            String name = clientList.get(registeredName).getName();
             for (PapinhoClientIface client : clientList.values()) {
                 client.removeClient(name);
             }
@@ -135,7 +135,7 @@ public class PapinhoServer implements PapinhoServerIface {
                 }
             }
             sessionStatus.getNameList().remove(name);
-            clientList.remove(registeredName);
+            clientList.remove(name);
         } catch (RemoteException rEx) {
             System.out.println(rEx.getMessage());
             rEx.printStackTrace();
@@ -154,15 +154,10 @@ public class PapinhoServer implements PapinhoServerIface {
             for (PapinhoClientIface client : clientList.values()) {
                 client.changeClientName(oldName, newName);
             }
+            PapinhoClientIface cli = clientList.get(oldName);
+            clientList.remove(oldName);
+            clientList.put(newName, cli);
             sessionStatus.getHistory().appendMessage(new UserNameChangeMessage(oldName, newName));
-            if (logWriter != null) {
-                try {
-                    logWriter.write("name_change\t" + oldName + "\t" + newName + "\n");
-                    logWriter.flush();
-                } catch (IOException ex) {
-                    System.out.println(ex.getMessage());
-                }
-            }
         } catch (RemoteException rEx) {
             System.out.println(rEx.getMessage());
             rEx.printStackTrace();
