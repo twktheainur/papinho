@@ -17,7 +17,7 @@ import org.common.model.SessionStatus;
 public interface PapinhoServerIface extends Remote{
     public void sendMessage(ChatMessage msg) throws RemoteException;
     public void sendMessage(ChatMessage msg, String to)throws RemoteException;
-    public SessionStatus addClient(String name) throws RemoteException;
+    public SessionStatus addClient(String name, Remote stub) throws RemoteException;
     public void clientNameChange(String oldName, String newName) throws RemoteException;
     public void removeClient(String name) throws RemoteException;
 }

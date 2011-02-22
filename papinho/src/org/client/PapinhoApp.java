@@ -12,6 +12,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.rmi.Remote;
 
 /**
  * The main class of the application.
@@ -32,10 +33,10 @@ public class PapinhoApp extends SingleFrameApplication {
         try {
             registry = LocateRegistry.getRegistry(host, Integer.valueOf(port));
             PapinhoServerIface server = (PapinhoServerIface) registry.lookup("server");
-            UnicastRemoteObject.exportObject(client, 0);
-            registeredName = "Client_"+client.getName();
-            registry.bind(registeredName, client);
-            client.setServer(server);
+            Remote stub = UnicastRemoteObject.exportObject(client, 0);
+            //registeredName = "Client_"+client.getName();
+            //registry.bind(registeredName, client);
+            client.setServer(server,stub);
         } catch (Exception e) {
             System.err.println("Error looking up the server: " + e);
             e.printStackTrace();
@@ -44,16 +45,15 @@ public class PapinhoApp extends SingleFrameApplication {
 
     public void releaseRemoteServerObject() {
         try {
-            client.getServer().removeClient(registeredName);
-            UnicastRemoteObject.unexportObject(client, true);
-            registry.unbind(registeredName);
-            registeredName = "";
+            client.getServer().removeClient(client.getName());
+            //UnicastRemoteObject.unexportObject(client, true);
+            //registry.unbind(registeredName);
             view.purgeClientList();
         } catch (Exception e) {
             System.err.println("Error releasing the server: " + e);
             e.printStackTrace();
         }
-        client.setServer(null);
+        client.setServer(null,null);
     }
 
     /**
@@ -82,5 +82,4 @@ public class PapinhoApp extends SingleFrameApplication {
     private PapinhoView view;
     private PapinhoClient client;
     private Registry registry;
-    private String registeredName;
 }

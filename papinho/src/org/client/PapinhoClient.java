@@ -10,6 +10,7 @@ import org.common.model.Message;
 import org.common.model.SessionStatus;
 import org.common.model.UserJoinMessage;
 import org.common.interfaces.PapinhoServerIface;
+import java.rmi.Remote;
 
 public class PapinhoClient implements PapinhoClientIface {
 
@@ -73,11 +74,12 @@ public class PapinhoClient implements PapinhoClientIface {
         return server;
     }
 
-    public void setServer(PapinhoServerIface server) {
+    public void setServer(PapinhoServerIface server,Remote stub) {
         this.server = server;
         if (server != null) {
             try {
-                SessionStatus status = server.addClient("Client_" + name);
+                
+                SessionStatus status = server.addClient(name,stub);
                 for (Message m : status.getHistory().getMessages()) {
                     int type = m.getType().getType();
                     if(type==MessageType.USER_JOINED){
@@ -116,6 +118,6 @@ public class PapinhoClient implements PapinhoClientIface {
         view.setTitle("Papinho - " + name);
     }
     private PapinhoServerIface server;
-    private PapinhoView view;
+    transient private PapinhoView view;
     private String name;
 }
