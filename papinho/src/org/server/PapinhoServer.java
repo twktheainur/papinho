@@ -27,40 +27,6 @@ public class PapinhoServer implements PapinhoServerIface {
     public PapinhoServer(MainServer mainServer) {
         this.mainServer = mainServer;
         sessionStatus = new SessionStatus();
-        loadHistory(MainServer.historyFile);
-        try {
-            logWriter = new BufferedWriter(new FileWriter(MainServer.historyFile));
-        } catch (IOException ex) {
-            System.out.println("Impossible to open the history log file for writing");
-        }
-    }
-
-    private void loadHistory(String filename) {
-        try {
-            File log = new File(filename);
-            if (!log.exists()) {
-                log.createNewFile();
-            } else {
-                BufferedReader br = new BufferedReader(new FileReader(log));
-                String line;
-                while ((line = br.readLine()) != null) {
-                    String[] message = line.split("\t");
-                    if (message[0].equals("msg")) {
-                        sessionStatus.getHistory().appendMessage(new ChatMessage(message[1], message[2]));
-                    } else if (message[0].equals("join")) {
-                        sessionStatus.getHistory().appendMessage(new UserJoinMessage(message[1]));
-                    } else if (message[0].equals("left")) {
-                        sessionStatus.getHistory().appendMessage(new UserLeftMessage(message[1]));
-                    } else if (message[0].equals("name_change")) {
-                        sessionStatus.getHistory().appendMessage(new UserNameChangeMessage(message[1], message[2]));
-                    }
-                }
-                br.close();
-            }
-        } catch (IOException fnfEx) {
-            System.out.println("Error while loading the log file...");
-            System.out.println(fnfEx.getMessage());
-        }
     }
 
     private PapinhoClientIface getClientRef(String registeredName) {

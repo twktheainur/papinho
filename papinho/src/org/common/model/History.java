@@ -19,7 +19,4 @@ public class History implements Serializable {
     public List<Message> getMessages() {
         return ds.listMessages();
     }
-
-    
-
 }

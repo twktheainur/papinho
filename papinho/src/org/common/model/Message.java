@@ -12,6 +12,7 @@ public abstract class Message implements Serializable{
         return type;
     }
 
+    @Override
     public abstract String toString();
 
     private MessageType type;

@@ -3,7 +3,7 @@ package org.common.model;
 import java.io.Serializable;
 import java.rmi.Remote;
 
-public class UserNameChangeMessage extends Message implements Remote, Serializable {
+public class UserNameChangeMessage extends Message implements Serializable {
 
     String oldName;
     String newName;
