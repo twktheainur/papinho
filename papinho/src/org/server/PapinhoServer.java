@@ -32,9 +32,9 @@ public class PapinhoServer implements PapinhoServerIface {
     private PapinhoClientIface getClientRef(String registeredName) {
 
         try {
-            if (System.getSecurityManager() == null) {
-                System.setSecurityManager(new SecurityManager());
-            }
+            //if (System.getSecurityManager() == null) {
+            //    System.setSecurityManager(new SecurityManager());
+            //}
 
             Registry registry = LocateRegistry.getRegistry(mainServer.getHost(), mainServer.getPort());
             PapinhoClientIface client = (PapinhoClientIface) registry.lookup(registeredName);

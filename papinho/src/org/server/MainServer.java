@@ -34,7 +34,7 @@ public class MainServer {
     }
 
     public static void main(String... args) {
-        MainServer ms = new MainServer("127.0.0.1", 8090);
+        MainServer ms = new MainServer("192.168.0.2", 8090);
         ms.start();
     }
 
