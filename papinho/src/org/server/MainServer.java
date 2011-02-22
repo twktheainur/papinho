@@ -5,6 +5,7 @@ import java.io.File;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 public class MainServer {
 
@@ -34,7 +35,21 @@ public class MainServer {
     }
 
     public static void main(String... args) {
-        MainServer ms = new MainServer("192.168.0.2", 8090);
+
+        String default_host="127.0.0.1";
+        int default_port=8090;
+        if(args.length==0){
+            System.out.println("Using default parameters..");
+        }else if(args.length==1){
+            default_port=Integer.parseInt(args[0]);
+        }else if(args.length==2){
+            default_host=args[0];
+            default_port=Integer.parseInt(args[1]);
+        }
+
+        System.out.println("Starting the server in host:"+default_host+" port:"+default_port);
+        
+        MainServer ms = new MainServer(default_host, default_port);
         ms.start();
     }
 
