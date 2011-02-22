@@ -26,6 +26,9 @@ public class MainServer {
             Remote stub = UnicastRemoteObject.exportObject(psi, 0);
             registry = LocateRegistry.getRegistry(this.host, this.port);
             registry.bind("server", stub);
+            if (System.getSecurityManager() == null) {
+                System.setSecurityManager(new SecurityManager());
+            }
             Runtime.getRuntime().addShutdownHook(new ShutdownHook("server",psi,registry));
             System.out.println("Server started");
         } catch (Exception e) {
