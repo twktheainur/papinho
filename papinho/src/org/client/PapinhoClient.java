@@ -35,7 +35,7 @@ public class PapinhoClient implements PapinhoClientIface {
     public void addClient(String name) {
         view.appendClient(name);
         view.appendString(name + " has joined the chat...\n");
-        
+
     }
 
     @Override
@@ -51,21 +51,21 @@ public class PapinhoClient implements PapinhoClientIface {
         } catch (RemoteException rEx) {
             rEx.printStackTrace();
             JOptionPane.showMessageDialog(view.getFrame(),
-                    "Network Error",
                     rEx.getMessage(),
+                    "Network Error",
                     JOptionPane.ERROR_MESSAGE);
         }
     }
 
-        public void sendMessage(String name, String message,String to) {
+    public void sendMessage(String name, String message, String to) {
         ChatMessage msg = new ChatMessage(name, message);
         try {
-            server.sendMessage(msg,to);
+            server.sendMessage(msg, to);
         } catch (RemoteException rEx) {
             rEx.printStackTrace();
             JOptionPane.showMessageDialog(view.getFrame(),
-                    "Network Error",
                     rEx.getMessage(),
+                    "Network Error",
                     JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -74,38 +74,37 @@ public class PapinhoClient implements PapinhoClientIface {
         return server;
     }
 
-    public void setServer(PapinhoServerIface server,Remote stub) {
+    public void setServer(PapinhoServerIface server, Remote stub) throws RemoteException {
         this.server = server;
         if (server != null) {
-            try {
-                
-                SessionStatus status = server.addClient(name,stub);
-                for (Message m : status.getHistory().getMessages()) {
-                    int type = m.getType().getType();
-                    if(type==MessageType.USER_JOINED){
-                        UserJoinMessage ojm = (UserJoinMessage)m;
-                        if(!ojm.getName().equals(name)){
-                            view.appendString(m.toString());
-                        }
-                    } else {
+            SessionStatus status = server.addClient(name, stub);
+            for (Message m : status.getHistory().getMessages()) {
+                int type = m.getType().getType();
+                if (type == MessageType.USER_JOINED) {
+                    UserJoinMessage ojm = (UserJoinMessage) m;
+                    if (!ojm.getName().equals(name)) {
+                        view.appendString(m.toString());
+                    }
+                } else {
                     view.appendString(m.toString());
-                    }
                 }
-                for (String name : status.getNameList()) {
-                    if (!name.equals(this.name)) {
-                        view.appendClient(name);
-                    }
+            }
+            for (String name : status.getNameList()) {
+                if (!name.equals(this.name)) {
+                    view.appendClient(name);
                 }
-            } catch (RemoteException rEx) {
-                rEx.printStackTrace();
             }
         }
+    }
+
+    public void resetServer() {
+        this.server = null;
     }
 
     @Override
     public void changeClientName(String oldName, String newName) {
         view.changeUserName(oldName, newName);
-        view.appendString(oldName + " is now known as " + newName+"...\n");
+        view.appendString(oldName + " is now known as " + newName + "...\n");
     }
 
     @Override
