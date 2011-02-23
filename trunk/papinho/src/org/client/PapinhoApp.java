@@ -3,6 +3,7 @@
  */
 package org.client;
 
+import java.rmi.NotBoundException;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
 
@@ -29,31 +30,27 @@ public class PapinhoApp extends SingleFrameApplication {
         show(view);
     }
 
-    public void getRemoteServerObject(String host, String port) {
-        try {
+    public void getRemoteServerObject(String host, String port) throws RemoteException,NotBoundException{
             registry = LocateRegistry.getRegistry(host, Integer.valueOf(port));
             PapinhoServerIface server = (PapinhoServerIface) registry.lookup("server");
             Remote stub = UnicastRemoteObject.exportObject(client, 0);
+            
+            client.setServer(server,stub);
             //registeredName = "Client_"+client.getName();
             //registry.bind(registeredName, client);
-            client.setServer(server,stub);
-        } catch (Exception e) {
-            System.err.println("Error looking up the server: " + e);
-            e.printStackTrace();
-        }
     }
 
     public void releaseRemoteServerObject() {
         try {
             client.getServer().removeClient(client.getName());
-            //UnicastRemoteObject.unexportObject(client, true);
+            UnicastRemoteObject.unexportObject(client, true);
             //registry.unbind(registeredName);
             view.purgeClientList();
         } catch (Exception e) {
             System.err.println("Error releasing the server: " + e);
             e.printStackTrace();
         }
-        client.setServer(null,null);
+        client.resetServer();
     }
 
     /**

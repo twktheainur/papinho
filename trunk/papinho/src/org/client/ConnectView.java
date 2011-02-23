@@ -1,7 +1,8 @@
-
 package org.client;
 
-
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import javax.swing.JOptionPane;
 
 public class ConnectView extends javax.swing.JFrame {
 
@@ -105,18 +106,29 @@ public class ConnectView extends javax.swing.JFrame {
     private void bOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bOkActionPerformed
         String host = tfHost.getText();
         String port = tfPort.getText();
-        
-        PapinhoApp.getApplication().getRemoteServerObject(host, port);
-        mainView.getmConnect().setVisible(false);
-        mainView.getmDisconnect().setVisible(true);
-        mainView.getTaInput().setEnabled(true);
-        dispose();
+        try {
+            PapinhoApp.getApplication().getRemoteServerObject(host, port);
+            mainView.getmConnect().setVisible(false);
+            mainView.getmDisconnect().setVisible(true);
+            mainView.getTaInput().setEnabled(true);
+            dispose();
+        } catch (RemoteException rEx) {
+            System.out.println("Error!");
+            JOptionPane.showMessageDialog(this,
+                    rEx.getMessage(),
+                    "Network Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (NotBoundException nbEx) {
+            JOptionPane.showMessageDialog(this,
+                    "There is no server running on the specified host and port",
+                    "Network Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_bOkActionPerformed
 
     private void bCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCancelActionPerformed
         dispose();
     }//GEN-LAST:event_bCancelActionPerformed
-
     private PapinhoView mainView;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bCancel;
@@ -126,5 +138,4 @@ public class ConnectView extends javax.swing.JFrame {
     private javax.swing.JTextField tfHost;
     private javax.swing.JTextField tfPort;
     // End of variables declaration//GEN-END:variables
-    
 }

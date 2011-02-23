@@ -88,29 +88,25 @@ public class PapinhoServer implements PapinhoServerIface {
     }
 
     @Override
-    public SessionStatus addClient(String name,Remote stub) {
+    public SessionStatus addClient(String name,Remote stub) throws RemoteException{
         //PapinhoClientIface pci = getClientRef(registeredName);
         try {
             
             System.out.println("registering client.." + name);
             clientList.put(name, (PapinhoClientIface)stub);
+            System.out.println("Added to list");
             sessionStatus.getNameList().add(name);
+            System.out.println("Added to session status");
             for (PapinhoClientIface client : clientList.values()) {
                 client.addClient(name);
             }
+            System.out.println("Broadcast to other clients");
             sessionStatus.getHistory().appendMessage(new UserJoinMessage(name));
-            if (logWriter != null) {
-                try {
-                    logWriter.write("join\t" + name + "\n");
-                    logWriter.flush();
-                } catch (IOException ex) {
-                    System.out.println(ex.getMessage());
-                }
-            }
+            System.out.println("Append to history");
             return sessionStatus;
         } catch (RemoteException rEx) {
-            rEx.printStackTrace();
-            return null;
+            System.out.println(rEx.getMessage());
+            throw new RemoteException("Impossible to connect to host: "+rEx.getMessage());
         }
     }
 
