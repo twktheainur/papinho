@@ -31,27 +31,12 @@ public class GenericDataSource implements DataSource {
     transient File file;
     transient FileInputStream fis;
 
-    public List<Message> listMessages() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 
-    public void persistMessage(List<Message> messages) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void persistMessage(Message messages) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void removeMessage(Message message) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-  /*  public GenericDataSource() {
+    public GenericDataSource() {
         file = new File("messages.ser");
         
         if (file.exists()) {
-            try {            System.getSecurityManager().
+            try {          
                 fis = new FileInputStream(file);
                 ois = new ObjectInputStream(fis);
                 messages = (List<Message>) ois.readObject();
@@ -99,5 +84,5 @@ public class GenericDataSource implements DataSource {
     public void removeMessage(Message message) {
         this.messages.remove(message);
         save();
-    }*/
+    }
 }
