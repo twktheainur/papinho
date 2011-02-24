@@ -1,12 +1,10 @@
 package org.server;
 
 import org.common.interfaces.PapinhoServerIface;
-import java.io.File;
 import java.rmi.Remote;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 public class MainServer {
 
@@ -15,11 +13,19 @@ public class MainServer {
     private Registry registry;
     static public String historyFile = "messageHistoryLog.txt";
 
+    /**
+     * Contructor
+     * @param server, server IP. e.g. 127.0.0.1
+     * @param port, server port [1-65535]. e.g. 8090
+     */
     public MainServer(String server, int port) {
         this.host = server;
         this.port = port;
     }
 
+    /**
+     * Start the server, by default uses server IP 127.0.0.1 and port 8090
+     */
     public void start() {
         try {
             PapinhoServerIface psi = new PapinhoServer(this);

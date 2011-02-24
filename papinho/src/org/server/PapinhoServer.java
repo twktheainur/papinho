@@ -1,18 +1,13 @@
 package org.server;
 
 import org.common.interfaces.PapinhoServerIface;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.HashMap;
 import java.util.Map;
-import javax.naming.event.NamespaceChangeListener;
 import java.rmi.Remote;
 import org.common.interfaces.PapinhoClientIface;
 import org.common.model.ChatMessage;
