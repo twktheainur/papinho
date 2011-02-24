@@ -11,18 +11,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import org.common.model.Message;
 import org.common.persistence.DataSource;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 /**
- *
+ * Serialized the List of the message in the hard drive as a messages.ser file
  * @author jander
  */
-public class GenericDataSource implements DataSource {
+public class BeanSerializationDataSource implements DataSource {
 
     List<Message> messages=new ArrayList<Message>();
     transient ObjectOutputStream ous;
@@ -31,8 +29,7 @@ public class GenericDataSource implements DataSource {
     transient File file;
     transient FileInputStream fis;
 
-
-    public GenericDataSource() {
+    public BeanSerializationDataSource() {
         file = new File("messages.ser");
         
         if (file.exists()) {
@@ -60,10 +57,8 @@ public class GenericDataSource implements DataSource {
             ous.close();
         } catch (FileNotFoundException ex) {
             System.out.println(ex.getMessage());
-            //e.printStackTrace();
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
-            //e.printStackTrace();
         }
     }
 

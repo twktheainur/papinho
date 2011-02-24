@@ -9,7 +9,7 @@ import java.io.Serializable;
 import org.common.persistence.DataSource;
 
 /**
- *
+ * Proxy class that creates the instance of the proper DataSource to be used.
  * @author jander
  */
 public class DataSourceProxy implements Serializable {
@@ -18,12 +18,13 @@ public class DataSourceProxy implements Serializable {
 
     private static DataSource ds;
 
+
     private DataSourceProxy(){}
 
     public static DataSourceProxy getInstance(){
         if(instance==null){
             instance=new DataSourceProxy();
-            ds=new GenericDataSource();
+            ds=new BeanSerializationDataSource();
         }
 
         return instance;
