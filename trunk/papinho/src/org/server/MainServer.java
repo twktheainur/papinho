@@ -30,6 +30,7 @@ public class MainServer {
         try {
             PapinhoServerIface psi = new PapinhoServer(this);
             Remote stub = UnicastRemoteObject.exportObject(psi, 0);
+            LocateRegistry.createRegistry(this.port);
             registry = LocateRegistry.getRegistry(this.host, this.port);
             registry.bind("server", stub);
             if (System.getSecurityManager() == null) {
