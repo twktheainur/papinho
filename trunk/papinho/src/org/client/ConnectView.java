@@ -114,11 +114,14 @@ public class ConnectView extends javax.swing.JFrame {
             dispose();
         } catch (RemoteException rEx) {
             System.out.println("Error!");
+
+            rEx.printStackTrace();
             JOptionPane.showMessageDialog(this,
                     rEx.getMessage(),
                     "Network Error",
                     JOptionPane.ERROR_MESSAGE);
         } catch (NotBoundException nbEx) {
+            nbEx.printStackTrace();
             JOptionPane.showMessageDialog(this,
                     "There is no server running on the specified host and port",
                     "Network Error",
