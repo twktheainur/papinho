@@ -47,7 +47,7 @@ The server provides the services in the table \ref{tab:serverprovide}. Those ser
 
 \subsection{Chat client side}
 
-The client must provide some method so the server can inform the client about new messages, user renaming, etc.  
+The client must provide some methods so the server can inform the client about new messages, user renaming, etc.  
   \begin{table}[H]
   \begin{center}
       \begin{tabular}{ | l | p{5cm} |}
@@ -71,5 +71,18 @@ On the current implementation the persistence method used was the {\it serializa
 
 \section{Graphical User Interface}
 \section{Networking and security issues}
+
+Since Java Virtual Machine runs inside a sandbox, term coined by sun. The application must explicity tell the JVM which kind of connections are allows and which hosts are allowed to do so.
+To specify this information is necessary to write a policy file. In this file we specify the permission, host, port and actions. 
+
+In the example \ref{policyfile} the policy allows socket connections from any host to any port. 
+
+
+\begin{lstlisting}[caption={Policy file},label=policyfile]
+grant {
+  permission java.net.SocketPermission "*:*", "accept,listen,connect,resolve";
+};
+\end{lstlisting}
+
 
 \end{document}
