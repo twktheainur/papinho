@@ -17,12 +17,15 @@
 %\usepackage{subfig}
 \usepackage[left=1cm, top=1cm, right=1cm, left=1cm, nohead, nofoot]{geometry}
 \title {RMI-based chat application: Papinho}
-\author{Jander Nascimiento, Andon Tchechmedjiev}
+\author{Andon Tchechmedjiev, Jander Nascimento}
 
 \begin{document}
 \maketitle
 \section{Presentation}
 \section{Remote interfaces}
+
+Remote interfaces are necessary to allow two computers to comunicate over the network using the RMI protocol. 
+
 \subsection{Chat server side}
 
 The server provides the services in the table \ref{tab:serverprovide}. Those services are provided in order to allow the client to comunicate between other clients and the server itself. 
@@ -63,7 +66,8 @@ The client must provide some method so the server can inform the client about ne
 
 \section{History and persistence}
 
-In order to manage the persistence, 
+In order to manage the persistence, the main design pattern used was a creational pattern {\it Proxy}. The main goal of this pattern is to decide which instance to generate.
+On the current implementation the persistence method used was the {\it serialization of the object to disk}, what is also called as {\it bean serialization}. 
 
 \section{Graphical User Interface}
 \section{Networking and security issues}
