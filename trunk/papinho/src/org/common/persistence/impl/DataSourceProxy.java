@@ -22,7 +22,7 @@ public class DataSourceProxy implements Serializable {
 
     private DataSourceProxy(){}
     /**
-     * Instantiate DataSource implementation and forward the most apropriate
+     * Instantiate DataSource implementation and forward the most appropriate
      * one.
      * @return {@link org.common.persistence.DataSource} instance
      */
