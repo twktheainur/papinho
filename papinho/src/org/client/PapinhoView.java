@@ -52,10 +52,17 @@ public class PapinhoView extends FrameView {
         });
     }
 
+    /**
+     * Sets the title of the main frame
+     * @param title
+     */
     public final void setTitle(String title) {
         getFrame().setTitle(title);
     }
 
+    /**
+     * Show the about box, Handler for the menu item Help, About...
+     */
     @Action
     public void showAboutBox() {
         if (aboutBox == null) {
@@ -66,18 +73,34 @@ public class PapinhoView extends FrameView {
         PapinhoApp.getApplication().show(aboutBox);
     }
 
+    /**
+     * Get a reference to the client remote object
+     * @return
+     */
     public PapinhoClient getClient() {
         return client;
     }
 
+    /**
+     * Sets the instance of the client remote object
+     * @param client
+     */
     public void setClient(PapinhoClient client) {
         this.client = client;
     }
 
+    /**
+     * Getter for the send button widget
+     * @return
+     */
     public JButton getbSend() {
         return bSend;
     }
 
+    /**
+     * Appends a private message to the output text frame 
+     * @param msg
+     */
     public void appendMessage(ChatMessage msg) {
         appendString("<");
         appendString(msg.getName(), msg.getName());
@@ -85,6 +108,12 @@ public class PapinhoView extends FrameView {
         appendString(msg.getMessage() + "\n");
     }
 
+    /**
+     * Appends a private message to the corresponding private chat frame, which is
+     * displayed if it was not before.
+     * @param msg Message
+     * @param to name of the recipient
+     */
     public void appendPrivateMessage(ChatMessage msg, String to) {
         PrivateChatView pc = getPrivateChatFrame(to);
         pc.appendString("<");
@@ -93,10 +122,19 @@ public class PapinhoView extends FrameView {
         pc.appendString(msg.getMessage() + "\n");
     }
 
+    /**
+     * Append a string to the output text field wit the default style
+     * @param str
+     */
     public void appendString(String str) {
         appendString(StyleContext.DEFAULT_STYLE, str);
     }
 
+    /**
+     * Appends a styled string to the output text field
+     * @param styleName Name of the predefined text style
+     * @param str String to be append
+     */
     public void appendString(String styleName, String str) {
         try {
             Style style = taOutput.getStyle(styleName);
@@ -108,6 +146,10 @@ public class PapinhoView extends FrameView {
         }
     }
 
+    /**
+     * Append an item in the connected users list
+     * @param name The name of a user
+     */
     public void appendClient(String name) {
         DefaultListModel model = (DefaultListModel) lUserList.getModel();
         model.addElement(name);
@@ -116,6 +158,11 @@ public class PapinhoView extends FrameView {
         StyleConstants.setForeground(style, new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255)));
     }
 
+    /**
+     * Change the name of an entry in the connected users name
+     * @param oldName Old name
+     * @param newName New name
+     */
     public void changeUserName(String oldName, String newName) {
         DefaultListModel model = (DefaultListModel) lUserList.getModel();
         Style oldStyle = taOutput.getStyle(oldName);
@@ -126,6 +173,10 @@ public class PapinhoView extends FrameView {
         }
     }
 
+    /**
+     * Remove an item from the connected users list
+     * @param name The name of a user
+     */
     public void removeClient(String name) {
         DefaultListModel model = (DefaultListModel) lUserList.getModel();
         taOutput.removeStyle(name);
@@ -137,6 +188,9 @@ public class PapinhoView extends FrameView {
         }
     }
 
+    /**
+     * Purges the connected client list
+     */
     public void purgeClientList() {
         DefaultListModel model = (DefaultListModel) lUserList.getModel();
         model.clear();
@@ -166,10 +220,8 @@ public class PapinhoView extends FrameView {
         return taOutput;
     }
 
-    
-
     /**
-     * 
+     * Either creates if it wasn't before or simply displays a private chat dialog between the local user and <code>user</code>
      * @param user The name of the user the private chat is with
      * @return A reference to the PrivateChatView that corresponds to the private chat with user
      */
@@ -191,6 +243,10 @@ public class PapinhoView extends FrameView {
         return pcf;
     }
 
+    /**
+     * Displays the contextual menu on the user list, except of the name of the local user
+     * @param e
+     */
     private void ShowUlistPopup(java.awt.event.MouseEvent e) {
         if (e.isPopupTrigger()) {
             lUserList.setSelectedIndex(lUserList.locationToIndex(e.getPoint()));
@@ -385,11 +441,19 @@ public class PapinhoView extends FrameView {
         return this;
     }
 
+    /**
+     * Handler for the connect menu item
+     * @param evt
+     */
     private void mConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mConnectActionPerformed
         ConnectView cv = new ConnectView(this);
         cv.setVisible(true);
     }//GEN-LAST:event_mConnectActionPerformed
 
+    /**
+     * Handler for the send button, sends a message
+     * @param evt
+     */
     private void bSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSendActionPerformed
         if (taInput.getText().length() > 0) {
             client.sendMessage(client.getName(), taInput.getText());
@@ -397,6 +461,10 @@ public class PapinhoView extends FrameView {
         }
     }//GEN-LAST:event_bSendActionPerformed
 
+    /**
+     * Handler for the disconnect menu item, disconnects the client from the server
+     * @param evt
+     */
     private void mDisconnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mDisconnectActionPerformed
         PapinhoApp.getApplication().releaseRemoteServerObject();
         taOutput.setText("");
@@ -410,12 +478,18 @@ public class PapinhoView extends FrameView {
         }
         privateChats.clear();
 }//GEN-LAST:event_mDisconnectActionPerformed
-
+    /**
+     * Handler for the settings menu item, displays the setting window
+     * @param evt
+     */
     private void mSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mSettingsActionPerformed
         OptionsView ov = new OptionsView(client, this);
         ov.setVisible(true);
 }//GEN-LAST:event_mSettingsActionPerformed
-
+    /**
+     * Handler for the release of a key
+     * @param evt
+     */
     private void taInputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_taInputKeyReleased
         if (this.taInput.getText().length() == 0) {
             bSend.setEnabled(false);//le bouton envoyer devient grise
@@ -424,6 +498,10 @@ public class PapinhoView extends FrameView {
         }
     }//GEN-LAST:event_taInputKeyReleased
 
+    /**
+     * Handler for a key press
+     * @param evt
+     */
     private void taInputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_taInputKeyPressed
         if (evt.isControlDown() && evt.getKeyCode() == KeyEvent.VK_ENTER) {
             taInput.append("\n");

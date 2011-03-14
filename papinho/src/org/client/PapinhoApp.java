@@ -30,20 +30,28 @@ public class PapinhoApp extends SingleFrameApplication {
         show(view);
     }
 
+    /**
+     * Retrieve the remote object for the server and export the client object to the
+     * registry
+     * @param host Hostname of the rmiregistry
+     * @param port Port of the rmiregistry
+     * @throws RemoteException Thrown ins case of a communication error
+     * @throws NotBoundException Thrown is the server is not running
+     */
     public void getRemoteServerObject(String host, String port) throws RemoteException,NotBoundException{
             registry = LocateRegistry.getRegistry(host, Integer.valueOf(port));
             PapinhoServerIface server = (PapinhoServerIface) registry.lookup("server");
             Remote stub = UnicastRemoteObject.exportObject(client);
             client.setServer(server,stub);
-            //registeredName = "Client_"+client.getName();
-            //registry.bind(registeredName, client);
     }
 
+    /**
+     * Disconnects form the server and un-exports the remote client object.
+     */
     public void releaseRemoteServerObject() {
         try {
             client.getServer().removeClient(client.getName());
             UnicastRemoteObject.unexportObject(client, true);
-            //registry.unbind(registeredName);
             view.purgeClientList();
         } catch (Exception e) {
             System.err.println("Error releasing the server: " + e);

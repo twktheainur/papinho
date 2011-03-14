@@ -20,7 +20,10 @@ public class DataSourceProxy implements Serializable {
 
 
     private DataSourceProxy(){}
-
+    /**
+     * Singleton pattern getter
+     * @return
+     */
     public static DataSourceProxy getInstance(){
         if(instance==null){
             instance=new DataSourceProxy();
@@ -30,8 +33,12 @@ public class DataSourceProxy implements Serializable {
         return instance;
     }
 
+    /**
+     * Getter for the data source
+     * @return
+     */
     public DataSource getDataSource(){
-        return this.ds;
+        return DataSourceProxy.ds;
     }
 
 }

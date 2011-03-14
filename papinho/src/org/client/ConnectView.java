@@ -4,6 +4,10 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import javax.swing.JOptionPane;
 
+/**
+ * Class for the connection dialog
+ * @author twk
+ */
 public class ConnectView extends javax.swing.JFrame {
 
     /** Creates new form ConnectView */
@@ -103,6 +107,10 @@ public class ConnectView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Gnadler ofr the OK button, establishes the connection with the server
+     * @param evt
+     */
     private void bOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bOkActionPerformed
         String host = tfHost.getText();
         String port = tfPort.getText();
@@ -129,6 +137,10 @@ public class ConnectView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_bOkActionPerformed
 
+    /**
+     * Handler for the Cancel button, disposes of the window
+     * @param evt
+     */
     private void bCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCancelActionPerformed
         dispose();
     }//GEN-LAST:event_bCancelActionPerformed
