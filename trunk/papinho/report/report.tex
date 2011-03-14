@@ -21,6 +21,12 @@
  \linespread{0.9}
  \usepackage[small,compact]{titlesec}
  \addtolength{\parskip}{-1.59mm}
+\lstset{
+basicstyle=\footnotesize,
+tabsize=1,
+breaklines=true,
+language=java
+}
  
 \begin{document}
 {\Large {\bf RMI-based chat application: Papinho}} \\
@@ -83,16 +89,17 @@ The features implemented are the following : Sending of messages to a common pub
     \label{fig:papinho1}
 \end{figure}
 \section{Networking and security issues}
-Since Java Virtual Machine runs inside a sandbox, term coined by sun. The application must explicity tell the JVM which kind of connections are allows and which hosts are allowed to do so.
-To specify this information is necessary to write a policy file. In this file we specify the permission, host, port and actions. 
-
-In the example \ref{policyfile} the policy allows socket connections from any host to any port. 
+\paragraph{} Due to Java's default security policy, it is necessary to write a security policy file so as to allow clients to connect to our server remotely ( by default only connections incoming from localhost are authorized). Additionally, we needed to authorize the use of shutdown hooks as we use them to perform cleanup operations when the server JVM exits. Our policy file is exhibited in listing \ref{policyfile}. The policy file tu use is specified at runtime with -Djava.security.policy=./server.policy
 
 \begin{lstlisting}[caption={Policy file},label=policyfile]
 grant {
+  permission java.security.AllPermission;
   permission java.net.SocketPermission "*:*", "accept,listen,connect,resolve";
+  permission java.lang.RuntimePermission "shutdownHooks";
 };
 \end{lstlisting}
+
+\paragraph{} We had a problem connecting clients from actual different hosts to the server, and as it turns out, the problem was that the server was bound to the wrong network interface. Indeed the UnicastRef returned to the clients pointed the ip address of this wrong interface, which in turn prevented the clients from connecting. In order to solve the problem, we had to manually specify the hostname to which to bind the server (bind in Socket terms not in RMI terms) with the runtime option -Djava.rmi.server.hostname=ipoftherightinterface.
 
 
 \end{document}
