@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (MiKTeX 2.8) (preloaded format=pdflatex 2009.10.20)  14 MAR 2011 21:26
+This is pdfTeX, Version 3.1415926-1.40.10 (MiKTeX 2.8) (preloaded format=pdflatex 2009.10.20)  14 MAR 2011 23:22
 entering extended mode
 **report.tex
 (C:\Users\twk\Documents\NetBeansProjects\papinho\report\report.tex
@@ -279,41 +279,53 @@ Package: geometry 2008/12/21 v4.2 Page Geometry
 \Gm@dimlist=\toks24
 
 ("C:\Program Files\MiKTeX 2.8\tex\latex\geometry\geometry.cfg"))
+("C:\Program Files\MiKTeX 2.8\tex\latex\titlesec\titlesec.sty"
+Package: titlesec 2007/08/12 v2.8 Sectioning titles
+\ttl@box=\box32
+\beforetitleunit=\skip46
+\aftertitleunit=\skip47
+\ttl@plus=\dimen125
+\ttl@minus=\dimen126
+\ttl@toksa=\toks25
+\titlewidth=\dimen127
+\titlewidthlast=\dimen128
+\titlewidthfirst=\dimen129
+)
 
 LaTeX Warning: Unused global option(s):
     [times,8pt].
 
 (C:\Users\twk\Documents\NetBeansProjects\papinho\report\report.aux)
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
 \c@lstlisting=\count119
 
 ("C:\Program Files\MiKTeX 2.8\tex\context\base\supp-pdf.tex"
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count120
-\scratchdimen=\dimen125
-\scratchbox=\box32
+\scratchdimen=\dimen130
+\scratchbox=\box33
 \nofMPsegments=\count121
 \nofMParguments=\count122
-\everyMPshowfont=\toks25
+\everyMPshowfont=\toks26
 \MPscratchCnt=\count123
-\MPscratchDim=\dimen126
+\MPscratchDim=\dimen131
 \MPnumerator=\count124
-\everyMPtoPDFconversion=\toks26
+\everyMPtoPDFconversion=\toks27
 )
-Package hyperref Info: Link coloring OFF on input line 22.
+Package hyperref Info: Link coloring OFF on input line 25.
  ("C:\Program Files\MiKTeX 2.8\tex\latex\hyperref\nameref.sty"
 Package: nameref 2007/05/29 v2.31 Cross-referencing by name of section
 
@@ -322,13 +334,13 @@ Package: refcount 2008/08/11 v3.1 Data extraction from references (HO)
 )
 \c@section@level=\count125
 )
-LaTeX Info: Redefining \ref on input line 22.
-LaTeX Info: Redefining \pageref on input line 22.
+LaTeX Info: Redefining \ref on input line 25.
+LaTeX Info: Redefining \pageref on input line 25.
 
 (C:\Users\twk\Documents\NetBeansProjects\papinho\report\report.out)
 (C:\Users\twk\Documents\NetBeansProjects\papinho\report\report.out)
 \@outlinefile=\write3
-\AtBeginShipoutBox=\box33
+\AtBeginShipoutBox=\box34
 
 *geometry auto-detecting driver*
 *geometry detected driver: pdftex*
@@ -339,9 +351,9 @@ twocolumn: true
 twoside: --
 asymmetric: --
 h-parts: 28.45274pt, 557.38951pt, 28.45274pt
-v-parts: 28.45274pt, 723.83813pt, 42.67911pt
+v-parts: 28.45274pt, 738.0645pt, 28.45274pt
 hmarginratio: --
-vmarginratio: 2:3
+vmarginratio: --
 lines: --
 heightrounded: --
 bindingoffset: 0.0pt
@@ -354,7 +366,7 @@ driver: pdftex
 \paperwidth  614.295pt
 \paperheight 794.96999pt
 \textwidth  557.38951pt
-\textheight 723.83813pt
+\textheight 738.0645pt
 \oddsidemargin  -43.81725pt
 \evensidemargin -43.81725pt
 \topmargin  -43.81725pt
@@ -371,50 +383,57 @@ driver: pdftex
 \@twocolumntrue 
 (1in=72.27pt, 1cm=28.45pt)
 -----------------------
-LaTeX Font Info:    Try loading font information for U+msa on input line 24.
+LaTeX Font Info:    Try loading font information for U+msa on input line 39.
 ("C:\Program Files\MiKTeX 2.8\tex\latex\amsfonts\umsa.fd"
 File: umsa.fd 2009/06/22 v3.00 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 24.
+LaTeX Font Info:    Try loading font information for U+msb on input line 39.
 
 ("C:\Program Files\MiKTeX 2.8\tex\latex\amsfonts\umsb.fd"
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
 )
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 95.
+Underfull \hbox (badness 1097) in paragraph at lines 43--43
+[]\OT1/cmr/m/n/10 remove a client from the list
+ []
+
+<img/mainscreen.png, id=34, 590.205pt x 367.3725pt>
+File: img/mainscreen.png Graphic file (type png)
+ <use img/mainscreen.png>
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 92.
 
 ("C:\Program Files\MiKTeX 2.8\tex\latex\base\omscmr.fd"
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 95.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 92.
 
-Overfull \hbox (194.31001pt too wide) in paragraph at lines 96--97
+Overfull \hbox (194.31001pt too wide) in paragraph at lines 93--94
 [][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[1{C:/Users/twk/AppData/Local/MiKTeX/2.8/pdftex/config/pdftex.map}
+[1
 
-
-]
+{C:/Users/twk/AppData/Local/MiKTeX/2.8/pdftex/config/pdftex.map} <C:/Users/twk/
+Documents/NetBeansProjects/papinho/report/img/mainscreen.png (PNG copy)>]
 (C:\Users\twk\Documents\NetBeansProjects\papinho\report\report.aux) ) 
 Here is how much of TeX's memory you used:
- 6671 strings out of 495285
- 95180 string characters out of 3180399
- 181677 words of memory out of 3000000
- 9760 multiletter control sequences out of 15000+200000
- 11849 words of font info for 46 fonts, out of 3000000 for 9000
+ 6912 strings out of 495285
+ 98298 string characters out of 3180399
+ 191678 words of memory out of 3000000
+ 10002 multiletter control sequences out of 15000+200000
+ 7849 words of font info for 30 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
- 38i,11n,36p,328b,1131s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 38i,11n,32p,390b,1132s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Progra
-m Files/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files/
-MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.
-8/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX 2.8/fonts/t
-ype1/public/amsfonts/cm/cmr17.pfb><C:/Program Files/MiKTeX 2.8/fonts/type1/publ
-ic/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.8/fonts/type1/public/amsfo
-nts/cm/cmti10.pfb>
-Output written on report.pdf (1 page, 88719 bytes).
+m Files/MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Program Files/
+MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files/MiKTeX 2
+.8/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.8/fonts/
+type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.8/fonts/type1/pu
+blic/amsfonts/cm/cmti10.pfb><C:/Program Files/MiKTeX 2.8/fonts/type1/public/ams
+fonts/cm/cmti12.pfb>
+Output written on report.pdf (1 page, 95605 bytes).
 PDF statistics:
- 78 PDF objects out of 1000 (max. 8388607)
- 17 named destinations out of 1000 (max. 500000)
- 57 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 79 PDF objects out of 1000 (max. 8388607)
+ 16 named destinations out of 1000 (max. 500000)
+ 62 words of extra memory for PDF output out of 10000 (max. 10000000)
 
