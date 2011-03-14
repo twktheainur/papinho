@@ -29,7 +29,8 @@ import org.common.model.UserLeftMessage;
 import org.common.model.UserNameChangeMessage;
 
 /**
- * Remote object for the chat server. 
+ * Server side provided methods implementation.
+ * @author jander
  */
 public class PapinhoServer implements PapinhoServerIface {
 
