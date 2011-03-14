@@ -4,6 +4,10 @@ package org.client;
 import java.rmi.RemoteException;
 import javax.swing.JOptionPane;
 
+/**
+ * Options dialog class
+ * @author twk
+ */
 public class OptionsView extends javax.swing.JFrame {
 
     /** Creates new form OptionsView */
@@ -88,10 +92,18 @@ public class OptionsView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Handler for the cancel button, disposes of the form
+     * @param evt
+     */
     private void bCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCancelActionPerformed
         dispose();
 }//GEN-LAST:event_bCancelActionPerformed
 
+    /**
+     * Handler for the OK button, Sends a name change message to the server
+     * @param evt
+     */
     private void bOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bOkActionPerformed
 
         String username = tfUsername.getText();

@@ -12,8 +12,16 @@ import org.common.model.UserJoinMessage;
 import org.common.interfaces.PapinhoServerIface;
 import java.rmi.Remote;
 
+/**
+ * Implementation of the Client remote interface
+ * @author twk
+ */
 public class PapinhoClient implements PapinhoClientIface {
 
+    /**
+     * Main constructor
+     * @param view a reference to the main view of the application
+     */
     @SuppressWarnings("LeakingThisInConstructor")
     public PapinhoClient(PapinhoView view) {
         this.view = view;
@@ -27,6 +35,7 @@ public class PapinhoClient implements PapinhoClientIface {
         view.appendMessage(msg);
     }
 
+    @Override
     public void receivePrivateMessage(ChatMessage msg) {
         view.appendPrivateMessage(msg, msg.getName());
     }
@@ -44,6 +53,11 @@ public class PapinhoClient implements PapinhoClientIface {
         view.appendString(name + "has left the chat...\n");
     }
 
+    /**
+     * Sends a chat message to the server [local method]
+     * @param name Name of the sender
+     * @param message Message to be sent
+     */
     public void sendMessage(String name, String message) {
         ChatMessage msg = new ChatMessage(name, message);
         try {
@@ -57,6 +71,12 @@ public class PapinhoClient implements PapinhoClientIface {
         }
     }
 
+    /**
+     * Sends a private chat message to the server [local method]
+     * @param name Name of the sender
+     * @param message Message to be sent
+     *@param to Name of the recipient
+     */
     public void sendMessage(String name, String message, String to) {
         ChatMessage msg = new ChatMessage(name, message);
         try {
@@ -70,10 +90,20 @@ public class PapinhoClient implements PapinhoClientIface {
         }
     }
 
+    /**
+     * Getter for the remote server instance [local]
+     * @return remote object for the server
+     */
     public PapinhoServerIface getServer() {
         return server;
     }
 
+    /**
+     * Connects to the server
+     * @param server remote object for the server
+     * @param stub Remote stub of the client remote object
+     * @throws RemoteException
+     */
     public void setServer(PapinhoServerIface server, Remote stub) throws RemoteException {
         this.server = server;
         if (server != null) {
@@ -97,6 +127,9 @@ public class PapinhoClient implements PapinhoClientIface {
         }
     }
 
+    /**
+     * Clears the reference to the remote object for the server (null) [local]
+     */
     public void resetServer() {
         this.server = null;
     }
@@ -112,6 +145,10 @@ public class PapinhoClient implements PapinhoClientIface {
         return name;
     }
 
+    /**
+     * Sets the name of the user and updates the title of the View[local]
+     * @param name Name of the client
+     */
     public final void setName(String name) {
         this.name = name;
         view.setTitle("Papinho - " + name);

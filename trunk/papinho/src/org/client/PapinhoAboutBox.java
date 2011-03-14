@@ -7,13 +7,19 @@ package org.client;
 import org.jdesktop.application.Action;
 
 public class PapinhoAboutBox extends javax.swing.JDialog {
-
+    /**
+     * Constructor for the about dialog
+     * @param parent Parent <code>JFrame</code>
+     */
     public PapinhoAboutBox(java.awt.Frame parent) {
         super(parent);
         initComponents();
         getRootPane().setDefaultButton(closeButton);
     }
 
+    /**
+     * Closes the about box
+     */
     @Action public void closeAboutBox() {
         dispose();
     }
