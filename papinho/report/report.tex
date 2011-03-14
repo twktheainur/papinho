@@ -1,4 +1,4 @@
-\documentclass[times, 10pt,twocolumn]{article}
+\documentclass[times, 8pt,twocolumn]{article}
 %\usepackage{ucs}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -24,13 +24,11 @@
 \section{Presentation}
 \section{Remote interfaces}
 
-\paragraph{}
-We will first define the remote interfaces we used, as they constitute the basis of our application. There is one remote interface for the server application and one for the client application.
-\paragraph{}
+\paragraph{} We will first define the remote interfaces we used, as they constitute the basis of our application. There is one remote interface for the server application and one for the client application.
+
 The architecture we have chosen for our application is a classical server centric one. Namely, all the clients are synchronized to a central state kept on the server. All messages be they public or private messages, will always transit through the server, where logging will occur.
 
 \subsection{Chat server side}
-\paragraph{}
 
 The server provides the services in the table \ref{tab:serverprovide}. Those services are provided in order to allow the client to comunicate between other clients and the server itself. 
 
