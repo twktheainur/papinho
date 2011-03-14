@@ -10,7 +10,9 @@ import java.util.List;
 import org.common.model.Message;
 
 /**
- * Interface that add DataSource should implement to provide persistence feature
+ * Interface that add DataSource to Papinho,
+ * There should be at least one implementation of this interface
+ * to provide persistence feature (persisted history)
  * @author jander
  */
 public interface DataSource extends Serializable {
