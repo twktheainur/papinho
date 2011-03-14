@@ -17,7 +17,8 @@ import org.common.model.Message;
 import org.common.persistence.DataSource;
 
 /**
- * Serialized the List of the message in the hard drive as a messages.ser file
+ * Serializes the List the messages in the hard drive as messages.ser file.
+ * @see org.common.persistence.DataSource
  * @author jander
  */
 public class BeanSerializationDataSource implements DataSource {

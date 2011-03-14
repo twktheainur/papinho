@@ -10,6 +10,7 @@ import org.common.persistence.DataSource;
 
 /**
  * Proxy class that creates the instance of the proper DataSource to be used.
+ * This is a singleton class.
  * @author jander
  */
 public class DataSourceProxy implements Serializable {
@@ -21,8 +22,9 @@ public class DataSourceProxy implements Serializable {
 
     private DataSourceProxy(){}
     /**
-     * Singleton pattern getter
-     * @return
+     * Instantiate DataSource implementation and forward the most apropriate
+     * one.
+     * @return {@link org.common.persistence.DataSource} instance
      */
     public static DataSourceProxy getInstance(){
         if(instance==null){
@@ -34,7 +36,8 @@ public class DataSourceProxy implements Serializable {
     }
 
     /**
-     * Getter for the data source
+     * Getter for the datasource instance
+     * @see org.common.persistence.DataSource
      * @return
      */
     public DataSource getDataSource(){

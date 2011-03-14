@@ -24,7 +24,12 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
- * Main class for the server application
+ * Main class for the server application.
+ * This class has the Main implementation and is responsible for
+ * starting the rmiregistry and publish the server stub with the name
+ * "server" .
+ * 
+ * @see org.server.PapinhoServer
  */
 public class MainServer {
 
@@ -66,7 +71,7 @@ public class MainServer {
     }
     /**
      * Main method of the server application
-     * @param args Command line arguments: [host][port]
+     * @param args [port, default:8090][host, default:127.0.0.1]
      */
     public static void main(String... args) {
         String default_host="127.0.0.1";
