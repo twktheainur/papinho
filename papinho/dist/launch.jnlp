@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<jnlp href="http://papinho.googlecode.com/svn/trunk/papinho/dist/launch.jnlp" spec="1.0+">
+<jnlp href="launch.jnlp" spec="1.0+">
     <information>
         <title>Papinho</title>
         <vendor/>
-        <homepage href="http://papinho.googlecode.com/svn/trunk/papinho/dist/"/>
+        <homepage href="http://code.google.com/p/papinho"/>
         <description>A simple JAVA RMI based chat application</description>
         <description kind="short">Papinho</description>
     </information>
