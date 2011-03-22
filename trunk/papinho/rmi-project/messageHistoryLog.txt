@@ -1,0 +1,8 @@
+join	User2042303581
+left	User2042303581
+join	User1343745456
+name_change	User1343745456	jander
+msg	jander	eita, ne que agora funciona
+left	jander
+join	User872357943
+left	User872357943
