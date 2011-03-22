@@ -1,6 +1,0 @@
-org.client
-org.common.interfaces
-org.common.model
-org.common.persistence
-org.common.persistence.impl
-org.server
