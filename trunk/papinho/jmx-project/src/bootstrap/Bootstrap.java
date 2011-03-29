@@ -8,8 +8,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import utils.JMSAdminServer;
+import virtualtree.ChannelCreatorVisitor;
 import virtualtree.VirtualNode;
-import virtualtree.VirtualNodeLocalVisitor;
+import virtualtree.VirtualNodeLocalExecutionVisitor;
 
 import com.sun.corba.se.impl.encoding.CodeSetConversion.BTCConverter;
 
@@ -19,6 +21,7 @@ import com.sun.corba.se.impl.encoding.CodeSetConversion.BTCConverter;
  */
 public class Bootstrap {
 
+	public static JMSAdminServer adminServer;
 	
 	public static VirtualNode buildTree(int N, int value, boolean useArity, List<String> hosts){
 		int arity = -1;
@@ -39,50 +42,12 @@ public class Bootstrap {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		boolean local = false;
-		String answer;
-		boolean arity = false;
-		InputStreamReader converter = new InputStreamReader(System.in);
-		BufferedReader in = new BufferedReader(converter);
-		Bootstrap bst;
-		/*System.out.println("Run locally?");
-		try {
-			answer = in.readLine();
-			if (answer.equals("yes")) {
-				local = true;
-			}
-			System.out.println("What is N?");
-			answer = in.readLine();
-			int n = Integer.valueOf(answer);
-			ArrayList<String> hosts = new ArrayList<String>();
-			if (!local) {
-				for(int i=0;i<n;i++){
-					System.out.println("Host "+i+" :");
-					hosts.add(in.readLine());
-				}
-			} 
-			System.out.println("Select: 1/Arity -- 2/Depth:");
-			answer = in.readLine();
-			if(answer.equals("1")){
-				System.out.println("Arity :");
-				arity = true;
-			} else{
-				System.out.println("Depth :");
-			}
-			int v = Integer.valueOf(in.readLine());
-			if(local){
-				bst = new Bootstrapper(n, v, arity);				
-			} else {
-				bst = new Bootstrapper(n, v, arity, hosts);
-			}
-		}
-
-		catch (Exception e) {
-		}*/
-		final VirtualNode tree = Bootstrap.buildTree(200, 10, false, null);
-		VirtualNodeLocalVisitor lv = new VirtualNodeLocalVisitor();
-		tree.accept(lv);
-
+	public static void bootstrap(String jmsURI,String username,String password,int N, int V, boolean isArity ,String[] hosts) {
+		adminServer = new JMSAdminServer(jmsURI, username, password);
+		VirtualNode tree = Bootstrap.buildTree(N, V, isArity, null);
+		ChannelCreatorVisitor cv = new ChannelCreatorVisitor();
+		tree.accept(cv);
+		VirtualNodeLocalExecutionVisitor vnlev = new VirtualNodeLocalExecutionVisitor();
+		tree.accept(vnlev);
 	}
 }
