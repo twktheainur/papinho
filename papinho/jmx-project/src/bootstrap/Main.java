@@ -24,6 +24,7 @@ public class Main {
 		}
 		CmdLineParser.Option bootstrap = parser.addBooleanOption('b', "bootstrap");
 		CmdLineParser.Option distribute = parser.addBooleanOption('d', "distribute");
+		Bootstrap.bootstrap("tcp://localhost:3035/","admin", "openjms", 50, 5, false, null);
 	}
 
 }
