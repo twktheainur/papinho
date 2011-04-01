@@ -24,6 +24,15 @@ public class Main {
 		}
 		CmdLineParser.Option bootstrap = parser.addBooleanOption('b', "bootstrap");
 		CmdLineParser.Option distribute = parser.addBooleanOption('d', "distribute");
+		CmdLineParser.Option adminurl = parser.addStringOption("admin_uri");
+		CmdLineParser.Option user = parser.addStringOption("user");
+		CmdLineParser.Option pass = parser.addStringOption("password");
+		
+		CmdLineParser.Option monitor = parser.addStringOption('m', "monitor");
+		CmdLineParser.Option parent = parser.addStringOption('p', "parent");
+		CmdLineParser.Option children = parser.addStringOption('c', "children");
+		
+		
 		Bootstrap.bootstrap("tcp://localhost:3035/","admin", "openjms", 50, 5, false, null);
 	}
 
