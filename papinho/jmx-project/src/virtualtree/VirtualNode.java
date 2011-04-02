@@ -1,8 +1,17 @@
 package virtualtree;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
+
+import javax.jms.JMSException;
+import javax.jms.Topic;
+import javax.jms.TopicConnection;
+import javax.jms.TopicConnectionFactory;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 public class VirtualNode {
 	private VirtualNode parent;
@@ -23,9 +32,45 @@ public class VirtualNode {
 				addChild(new VirtualNode(this, N,D-1, a,++id, hosts));
 			}
 		}
+		
+		
+		Hashtable properties = new Hashtable();
+        properties.put(Context.INITIAL_CONTEXT_FACTORY, 
+                       "org.exolab.jms.jndi.InitialContextFactory");
+        properties.put(Context.PROVIDER_URL, "rmi://localhost:1099/");
+        
+        Context context = null;
+        try{
+        context = new InitialContext(properties);
+        } catch(Exception e){
+        	System.out.println("Initial context error");
+        
+        }
+		
+		 try {
+	            TopicConnectionFactory topicConnectionFactory = (TopicConnectionFactory)
+	                context.lookup("JmsTopicConnectionFactory");
+	            
+	            try {
+					TopicConnection d=topicConnectionFactory.createTopicConnection();
+				} catch (JMSException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	            
+	            
+	            Topic topic = (Topic) context.lookup(parent.getId()+"Topic");
+	        } catch (NamingException e) {
+	            System.out.println("JNDI API lookup failed: " +
+	                e.toString());
+	            e.printStackTrace();
+	            System.exit(1);
+	        }
+		
 	}
 
 	public VirtualNode getParent() {
+		
 		return parent;
 	}
 

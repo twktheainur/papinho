@@ -48,11 +48,21 @@ package example;
  * Specify a topic name on the command line when you run the 
  * program. To end the program, enter Q or q on the command line.
  */
-import javax.jms.*;
-import javax.naming.*;
-
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Hashtable;
+
+import javax.jms.JMSException;
+import javax.jms.Session;
+import javax.jms.TextMessage;
+import javax.jms.Topic;
+import javax.jms.TopicConnection;
+import javax.jms.TopicConnectionFactory;
+import javax.jms.TopicSession;
+import javax.jms.TopicSubscriber;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 public class SimpleTopicSubscriber {
 
@@ -144,7 +154,7 @@ public class SimpleTopicSubscriber {
                     Session.AUTO_ACKNOWLEDGE);
             topicSubscriber = 
                 topicSession.createSubscriber(topic);
-            topicListener = new TextListener();
+            topicListener = new example.TextListener();
             topicSubscriber.setMessageListener(topicListener);
             topicConnection.start();
             System.out.println("To end program, enter Q or q, " +
