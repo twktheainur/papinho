@@ -32,7 +32,7 @@ public class Bootstrap {
 		} else {
 			depth = value;
 			int a = 2;
-			for(a=2;(int)Math.pow(a, depth)<=N;a++);
+			for(a=2;(int)Math.pow(a, depth)<=N;a++); //computing arity knowing N and depth
 			arity = a;
 			System.out.println(a);
 		}
@@ -49,5 +49,7 @@ public class Bootstrap {
 		tree.accept(cv);
 		VirtualNodeLocalExecutionVisitor vnlev = new VirtualNodeLocalExecutionVisitor();
 		tree.accept(vnlev);
+		
+		
 	}
 }

@@ -1,6 +1,10 @@
 package bootstrap;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import utils.CmdLineParser;
+import DistMon.DistributedMonitor;
 
 public class Main {
 
@@ -34,6 +38,12 @@ public class Main {
 		
 		
 		Bootstrap.bootstrap("tcp://localhost:3035/","admin", "openjms", 50, 5, false, null);
+		
+		List<String> mychildren = new ArrayList();
+		mychildren.add("T2");
+		mychildren.add("T3");
+		DistributedMonitor root = new DistributedMonitor(null, mychildren);
 	}
+	
 
 }
