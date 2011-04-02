@@ -13,6 +13,8 @@ import virtualtree.ChannelCreatorVisitor;
 import virtualtree.VirtualNode;
 import virtualtree.VirtualNodeLocalExecutionVisitor;
 
+import DistMon.DistributedMonitor;
+
 import com.sun.corba.se.impl.encoding.CodeSetConversion.BTCConverter;
 
 /**
