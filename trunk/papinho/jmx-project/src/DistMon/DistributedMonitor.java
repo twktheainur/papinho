@@ -196,7 +196,7 @@ public class DistributedMonitor extends Thread implements MessageListener {
 
 	private static void printUsage() {
 		System.out
-				.println("Usage: distmon -n Name -p ParentName -c Child1, Child2");
+				.println("Usage: distmon -n Name -p ParentName -c Child1 -c Child2");
 	}
 	
 	public static void main(String... args) {
