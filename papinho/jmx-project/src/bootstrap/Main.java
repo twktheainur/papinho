@@ -87,7 +87,9 @@ public class Main {
 			System.out.println("Runny Run!!!");
 			DistributedMonitor dm = new DistributedMonitor(name,pt, c);
 			DistributedMonitorView dmv = new DistributedMonitorView(dm);
-			dmv.setVisible(true);
+			dmv.setSize(300, 300);
+			//dmv.setVisible(true);
+			dm.start();
 			System.out.println("Yawn...");
 	        //Thread.sleep(Long.MAX_VALUE);
 		}

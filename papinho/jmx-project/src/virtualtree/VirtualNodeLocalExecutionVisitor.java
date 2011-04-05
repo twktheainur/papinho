@@ -42,7 +42,7 @@ public class VirtualNodeLocalExecutionVisitor implements VirtualNodeVisitor {
 			//args.add(c.getId() + "Topic");
 		}
 		System.out.println(cmd);
-		try {
+		//try {
 			String s= null;
 			/*String[] aa = new String[args.size()];
 			int i = 0;
@@ -50,7 +50,7 @@ public class VirtualNodeLocalExecutionVisitor implements VirtualNodeVisitor {
 				aa[i] = arg;
 				i++;
 			}*/
-			Process p = Runtime.getRuntime().exec(cmd);
+			//Process p = Runtime.getRuntime().exec(cmd);
 
 			// run the Unix "ps -ef" command
 			// using the Runtime exec method:
@@ -71,9 +71,9 @@ public class VirtualNodeLocalExecutionVisitor implements VirtualNodeVisitor {
 				System.err.println(s);
 			}*/
 
-		} catch (IOException ex) {
+		/*} catch (IOException ex) {
 			ex.printStackTrace();
-		}
+		}*/
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException ie) {

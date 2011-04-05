@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Random;
 import java.util.Vector;
 
 import javax.jms.JMSException;
@@ -25,6 +26,8 @@ import javax.naming.NamingException;
 
 import utils.CmdLineParser;
 import dto.NodeInfo;
+import dto.NodeInfoComposite;
+import dto.NodeInfoLeaf;
 import example.TextListener;
 
 public class DistributedMonitor extends Thread implements MessageListener {
@@ -45,14 +48,14 @@ public class DistributedMonitor extends Thread implements MessageListener {
 	private String name;
 	private String parent;
 	private List<String> children;
-	private List<NodeInfo> info = new ArrayList<NodeInfo>();
+	private NodeInfoComposite info;
 	private boolean isActive = true;
 
 	public DistributedMonitor(String name, String parent, List<String> children) {
 		this.name = name;
 		this.parent = parent;
 		this.children = children;
-
+		info = new NodeInfoComposite();
 		System.out.print("Creating node " + name + " parent: " + parent
 				+ " children:");
 		if (children != null) {
@@ -60,9 +63,10 @@ public class DistributedMonitor extends Thread implements MessageListener {
 				System.out.print(line + ",");
 			}
 		}
-		System.out.println();
 
 		initConnection(name);
+		
+		System.out.println("post init");
 
 		if (children != null) {
 			for (String childTopic : children) {
@@ -73,16 +77,20 @@ public class DistributedMonitor extends Thread implements MessageListener {
 	}
 
 	private NodeInfo getNodeInfo() {
-		NodeInfo fakeinfo = new NodeInfo(this.name, 5000l);
+		Random r = new Random();
+		NodeInfoLeaf fakeinfo = new NodeInfoLeaf(this.name, r.nextInt(56987));
 		return fakeinfo;
 	}
 
 	public void sendinfo() {
-		List<NodeInfo> collectedNodes = new ArrayList<NodeInfo>();
-		collectedNodes.add(getNodeInfo());
-		collectedNodes.addAll(info);
-		info.removeAll(collectedNodes);
-		dispatchForParent(collectedNodes);
+		if(children!=null && children.size()==0){
+			dispatchForParent(getNodeInfo());
+		} else {
+			info.addNodeInfo(getNodeInfo());
+			dispatchForParent(info);
+			info.clear();
+		}
+
 	}
 
 	public void initConnection(String topicName) {
@@ -161,8 +169,8 @@ public class DistributedMonitor extends Thread implements MessageListener {
 
 	}
 
-	private void dispatchForParent(List<NodeInfo> strmessage) {
-
+	private void dispatchForParent(NodeInfo ni) {
+		System.out.println(name + " memory="+ni.getMemory());
 		// If does not have a parent, do not dispatch
 		if (this.parent == null || this.parent.equals("null")) {
 			System.out
@@ -170,8 +178,7 @@ public class DistributedMonitor extends Thread implements MessageListener {
 			return;
 		}
 
-		System.out.println(this.name + " is dispatching " + strmessage.size()
-				+ " infos");
+		System.out.println(this.name + " is dispatching info");
 
 		try {
 			topicConnection = topicConnectionFactory.createTopicConnection();
@@ -180,7 +187,7 @@ public class DistributedMonitor extends Thread implements MessageListener {
 			topicPublisher = topicSession.createPublisher(topic);
 			// message = topicSession.createTextMessage();
 			message = topicSession.createObjectMessage();
-			message.setObject((Serializable) strmessage);
+			message.setObject((Serializable)ni);
 			// message.setText(strmessage);
 			// System.out.println("Publishing message: " +message.getText());
 			topicPublisher.publish(message);
@@ -267,20 +274,14 @@ public class DistributedMonitor extends Thread implements MessageListener {
 	@Override
 	public void onMessage(Message msg) {
 		// TODO Auto-generated method stub
-		System.out.println(name + " received messages:");
 		ObjectMessage om = (ObjectMessage) msg;
-		List<NodeInfo> info = null;
 		try {
-			info = (List<NodeInfo>) om.getObject();
+			NodeInfo childInfo = (NodeInfo)om.getObject();
+			info.addNodeInfo(childInfo);
 		} catch (JMSException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		for (NodeInfo x : info) {
-			System.out.println("Node " + x.getName());
-		}
-
 	}
 
 }
