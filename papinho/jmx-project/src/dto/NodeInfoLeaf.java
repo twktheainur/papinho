@@ -2,6 +2,7 @@ package dto;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class NodeInfoLeaf implements Serializable,NodeInfo {
 	private String name;
 	private long memory;
