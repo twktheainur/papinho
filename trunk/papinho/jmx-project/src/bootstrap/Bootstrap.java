@@ -34,7 +34,11 @@ public class Bootstrap {
 			arity = a;
 			System.out.println(a);
 		}
-		return new VirtualNode(null, N,depth, arity,null,hosts);
+		VirtualNode.N = N;
+		VirtualNode vn = new VirtualNode(null,arity,hosts);
+		vn.setId("node0");
+		vn.buildTree(vn, arity,null,hosts); 
+		return vn;
 	}
 	
 	/**

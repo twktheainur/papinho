@@ -3,73 +3,56 @@ package virtualtree;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class VirtualNode {
 	private VirtualNode parent;
 	private List<VirtualNode> children;
 	private String host;
 	private String id;
+	public static Integer N;
+	private List<String> hosts;
 
-	public VirtualNode(VirtualNode parent, int N, int D,int a,List<String> ids, List<String> hosts) {
-		if(parent == null){
-			ids = new ArrayList<String>(N);
-			for(int i=0;i<N;i++){
-				ids.add("node"+i);
-			}
-		}
-		this.parent = parent;
-		this.id = ids.remove(0);
-		N--;
+	public VirtualNode(VirtualNode parent, int a, List<String> hosts) {
 		children = new ArrayList<VirtualNode>(a);
-		System.out.println(id);
-		if (N > 0 && D>0) {
-			if (hosts != null) {
-				host = hosts.remove(0);
+		this.hosts = hosts;
+		parent = null;
+	}
+
+	public void buildTree(VirtualNode node, int a, List<String> ids,
+			List<String> hosts) {
+		if (VirtualNode.N > 0) {
+			if (ids == null) {
+				ids = new ArrayList<String>(VirtualNode.N);
+				for (int i = 1; i < VirtualNode.N; i++) {
+					ids.add("node" + i);
+				}
 			}
-			for (int i = 0; i < a && ids.size() !=0; i++) {
-				N--;
-				addChild(new VirtualNode(this, N,D-1, a,ids, hosts));
+			node.setId(ids.remove(0));
+			if (hosts != null) {
+				node.setHost(hosts.remove(0));
+			}
+			for (int i = 0; i < a && VirtualNode.N > 0; i++) {
+				VirtualNode.N--;
+				node.addChild(new VirtualNode(this, a, hosts));
+			}
+			int size = node.children.size();
+			for (int i = 0; i < size; i++) {
+				VirtualNode child = node.getChildren().get(i);
+				child.setParent(node);
+				buildTree(child, a, ids, hosts);
 			}
 		}
-		
-		
-		/*Hashtable properties = new Hashtable();
-        properties.put(Context.INITIAL_CONTEXT_FACTORY, 
-                       "org.exolab.jms.jndi.InitialContextFactory");
-        properties.put(Context.PROVIDER_URL, "rmi://localhost:1099/");
-        
-        Context context = null;
-        try{
-        context = new InitialContext(properties);
-        } catch(Exception e){
-        	System.out.println("Initial context error");
-        
-        }
-		
-		 try {
-	            TopicConnectionFactory topicConnectionFactory = (TopicConnectionFactory)
-	                context.lookup("JmsTopicConnectionFactory");
-	            
-	            try {
-					TopicConnection d=topicConnectionFactory.createTopicConnection();
-				} catch (JMSException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	            
-	            
-	            Topic topic = (Topic) context.lookup(parent.getId()+"Topic");
-	        } catch (NamingException e) {
-	            System.out.println("JNDI API lookup failed: " +
-	                e.toString());
-	            e.printStackTrace();
-	            System.exit(1);
-	        }*/
-		
+	}
+
+	public Integer getN() {
+		return N;
+	}
+
+	public void setN(Integer n) {
+		N = n;
 	}
 
 	public VirtualNode getParent() {
-		
+
 		return parent;
 	}
 
@@ -95,8 +78,6 @@ public class VirtualNode {
 		}
 		v.visit(this);
 	}
-	
-	
 
 	public String getId() {
 		return id;
