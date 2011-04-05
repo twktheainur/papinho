@@ -46,23 +46,28 @@ public class DistributedMonitor extends Thread implements MessageListener {
 	private String parent;
 	private List<String> children;
 	private List<NodeInfo> info = new ArrayList<NodeInfo>();
-	private boolean isActive=true;
+	private boolean isActive = true;
 
 	public DistributedMonitor(String name, String parent, List<String> children) {
 		this.name = name;
 		this.parent = parent;
 		this.children = children;
 
-		System.out.print("Creating node "+name+" parent: "+parent+" children:");
-		for(String line:children){
-			System.out.print(line+",");
+		System.out.print("Creating node " + name + " parent: " + parent
+				+ " children:");
+		if (children != null) {
+			for (String line : children) {
+				System.out.print(line + ",");
+			}
 		}
 		System.out.println();
-		
+
 		initConnection(name);
 
-		for (String childTopic : children) {
-			subscribe(childTopic, this);
+		if (children != null) {
+			for (String childTopic : children) {
+				subscribe(childTopic, this);
+			}
 		}
 
 	}
@@ -92,7 +97,7 @@ public class DistributedMonitor extends Thread implements MessageListener {
 		} catch (Exception e) {
 			System.out.println("Initial context error");
 
-		}		
+		}
 
 		/*
 		 * Create a JNDI API InitialContext object if none exists yet.
@@ -113,7 +118,7 @@ public class DistributedMonitor extends Thread implements MessageListener {
 			topicConnectionFactory = (TopicConnectionFactory) context
 					.lookup("JmsTopicConnectionFactory");
 
-			if (topicName != null && !topicName.equals("null")){
+			if (topicName != null && !topicName.equals("null")) {
 				topic = (Topic) context.lookup(topicName);
 			}
 
@@ -159,11 +164,11 @@ public class DistributedMonitor extends Thread implements MessageListener {
 	private void dispatchForParent(List<NodeInfo> strmessage) {
 
 		// If does not have a parent, do not dispatch
-		if (this.parent == null || this.parent.equals("null")){
-			System.out.println(this.name+"-No parent, suspending dispatching");
+		if (this.parent == null || this.parent.equals("null")) {
+			System.out
+					.println(this.name + "-No parent, suspending dispatching");
 			return;
 		}
-		
 
 		System.out.println(this.name + " is dispatching " + strmessage.size()
 				+ " infos");
@@ -198,16 +203,16 @@ public class DistributedMonitor extends Thread implements MessageListener {
 		System.out
 				.println("Usage: distmon -n Name -p ParentName -c Child1 -c Child2");
 	}
-	
+
 	public static void main(String... args) {
 
-		
 		CmdLineParser parser = new CmdLineParser();
-		
+
 		CmdLineParser.Option nameArg = parser.addStringOption('n', "name");
 		CmdLineParser.Option parentArg = parser.addStringOption('p', "parent");
-		CmdLineParser.Option childrenArg = parser.addStringOption('c', "children");
-		
+		CmdLineParser.Option childrenArg = parser.addStringOption('c',
+				"children");
+
 		try {
 			parser.parse(args);
 		} catch (CmdLineParser.OptionException e) {
@@ -215,17 +220,16 @@ public class DistributedMonitor extends Thread implements MessageListener {
 			printUsage();
 			System.exit(2);
 		}
-		
-		
-		Vector<String> childrenList = parser.getOptionValues(childrenArg);
-		String nameString=(String)parser.getOptionValue(nameArg,"null");
-		String parentString=(String)parser.getOptionValue(parentArg,"null");
-		
 
-		DistributedMonitor monitor=new DistributedMonitor(nameString, parentString, childrenList.subList(0, childrenList.size()));
-		
+		Vector<String> childrenList = parser.getOptionValues(childrenArg);
+		String nameString = (String) parser.getOptionValue(nameArg, "null");
+		String parentString = (String) parser.getOptionValue(parentArg, "null");
+
+		DistributedMonitor monitor = new DistributedMonitor(nameString,
+				parentString, childrenList.subList(0, childrenList.size()));
+
 		System.out.println("To end program, enter Q or q, " + "then <return>");
-		char answer='s';
+		char answer = 's';
 		monitor.start();
 		InputStreamReader inputStreamReader = new InputStreamReader(System.in);
 		while (!((answer == 'q') || (answer == 'Q'))) {
@@ -248,7 +252,7 @@ public class DistributedMonitor extends Thread implements MessageListener {
 
 	public void run() {
 		System.out.println("Starting Monitor..");
-		while(isActive){
+		while (isActive) {
 			sendinfo();
 			try {
 				Thread.sleep(3000);
@@ -259,7 +263,7 @@ public class DistributedMonitor extends Thread implements MessageListener {
 		}
 		System.out.println("Finishing monitor...");
 	}
-	
+
 	@Override
 	public void onMessage(Message msg) {
 		// TODO Auto-generated method stub

@@ -5,7 +5,6 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Hashtable;
 import java.util.Vector;
-import java.util.Enumeration;
 import java.util.Locale;
 
 /**
@@ -23,7 +22,8 @@ public class CmdLineParser {
     /**
      * Base class for exceptions that may be thrown when options are parsed
      */
-    public static abstract class OptionException extends Exception {
+    @SuppressWarnings("serial")
+	public static abstract class OptionException extends Exception {
         OptionException(String msg) { super(msg); }
     }
 
@@ -33,7 +33,8 @@ public class CmdLineParser {
      * an error string suitable for reporting the error to the user (in
      * English).
      */
-    public static class UnknownOptionException extends OptionException {
+    @SuppressWarnings("serial")
+	public static class UnknownOptionException extends OptionException {
         UnknownOptionException( String optionName ) {
             this(optionName, "Unknown option '" + optionName + "'");
         }
@@ -57,6 +58,7 @@ public class CmdLineParser {
      * string.
      * @author Vidar Holen
      */
+    @SuppressWarnings("serial")
     public static class UnknownSuboptionException
         extends UnknownOptionException {
         private char suboption;
@@ -75,6 +77,7 @@ public class CmdLineParser {
      * string.
      * @author Vidar Holen
      */
+    @SuppressWarnings("serial")
     public static class NotFlagException extends UnknownOptionException {
         private char notflag;
 
@@ -96,6 +99,7 @@ public class CmdLineParser {
      * an error string suitable for reporting the error to the user (in
      * English).
      */
+    @SuppressWarnings("serial")
     public static class IllegalOptionValueException extends OptionException {
         public IllegalOptionValueException( Option opt, String value ) {
             super("Illegal value '" + value + "' for option " +
@@ -522,6 +526,6 @@ public class CmdLineParser {
 
 
     private String[] remainingArgs = null;
-    private Hashtable options = new Hashtable(10);
+    private Hashtable<String,Option> options = new Hashtable<String, Option>(10);
     private Hashtable values = new Hashtable(10);
 }
