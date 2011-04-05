@@ -1,17 +1,12 @@
 package utils;
 
-import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.Queue;
 import java.util.Vector;
 
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Topic;
-import javax.jms.TopicConnectionFactory;
 import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import org.exolab.jms.administration.AdminConnectionFactory;
 import org.exolab.jms.administration.JmsAdminServerIfc;
 
@@ -38,7 +33,7 @@ public class JMSAdminServer {
 			}
 		} else {
 			try {
-				JmsAdminServerIfc admin = AdminConnectionFactory.create(url);
+				admin = AdminConnectionFactory.create(url);
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.exit(1);
@@ -47,6 +42,7 @@ public class JMSAdminServer {
 
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void listTopics() throws JMSException {
 		Vector destinations = admin.getAllDestinations();
 		Iterator iterator = destinations.iterator();

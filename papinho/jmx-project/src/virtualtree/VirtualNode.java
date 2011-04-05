@@ -1,17 +1,8 @@
 package virtualtree;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.Set;
 
-import javax.jms.JMSException;
-import javax.jms.Topic;
-import javax.jms.TopicConnection;
-import javax.jms.TopicConnectionFactory;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 
 public class VirtualNode {
 	private VirtualNode parent;
@@ -19,22 +10,30 @@ public class VirtualNode {
 	private String host;
 	private String id;
 
-	public VirtualNode(VirtualNode parent, int N, int D,int a, int id, List<String> hosts) {
+	public VirtualNode(VirtualNode parent, int N, int D,int a,List<String> ids, List<String> hosts) {
+		if(parent == null){
+			ids = new ArrayList<String>(N);
+			for(int i=0;i<N;i++){
+				ids.add("node"+i);
+			}
+		}
 		this.parent = parent;
-		this.id = "node"+String.valueOf(id);
+		this.id = ids.remove(0);
+		N--;
 		children = new ArrayList<VirtualNode>(a);
+		System.out.println(id);
 		if (N > 0 && D>0) {
 			if (hosts != null) {
 				host = hosts.remove(0);
 			}
-			for (int i = 0; i < a && N != 0; i++) {
+			for (int i = 0; i < a && ids.size() !=0; i++) {
 				N--;
-				addChild(new VirtualNode(this, N,D-1, a,++id, hosts));
+				addChild(new VirtualNode(this, N,D-1, a,ids, hosts));
 			}
 		}
 		
 		
-		Hashtable properties = new Hashtable();
+		/*Hashtable properties = new Hashtable();
         properties.put(Context.INITIAL_CONTEXT_FACTORY, 
                        "org.exolab.jms.jndi.InitialContextFactory");
         properties.put(Context.PROVIDER_URL, "rmi://localhost:1099/");
@@ -65,7 +64,7 @@ public class VirtualNode {
 	                e.toString());
 	            e.printStackTrace();
 	            System.exit(1);
-	        }
+	        }*/
 		
 	}
 

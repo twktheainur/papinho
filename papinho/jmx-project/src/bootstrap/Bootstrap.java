@@ -3,9 +3,6 @@
  */
 package bootstrap;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 import utils.JMSAdminServer;
@@ -15,7 +12,6 @@ import virtualtree.VirtualNodeLocalExecutionVisitor;
 
 import DistMon.DistributedMonitor;
 
-import com.sun.corba.se.impl.encoding.CodeSetConversion.BTCConverter;
 
 /**
  * @author twk
@@ -38,7 +34,7 @@ public class Bootstrap {
 			arity = a;
 			System.out.println(a);
 		}
-		return new VirtualNode(null, N,depth, arity,0, hosts);
+		return new VirtualNode(null, N,depth, arity,null,hosts);
 	}
 	
 	/**
@@ -49,9 +45,7 @@ public class Bootstrap {
 		VirtualNode tree = Bootstrap.buildTree(N, V, isArity, null);
 		ChannelCreatorVisitor cv = new ChannelCreatorVisitor();
 		tree.accept(cv);
-		VirtualNodeLocalExecutionVisitor vnlev = new VirtualNodeLocalExecutionVisitor();
+		VirtualNodeLocalExecutionVisitor vnlev = new VirtualNodeLocalExecutionVisitor("cmd /c start");
 		tree.accept(vnlev);
-		
-		
 	}
 }
