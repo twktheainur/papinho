@@ -14,11 +14,11 @@ public class VirtualNode {
 	public VirtualNode(VirtualNode parent, int a, List<String> hosts) {
 		children = new ArrayList<VirtualNode>(a);
 		this.hosts = hosts;
-		parent = null;
+		//parent = null;
+		setParent(parent);
 	}
-
-	public void buildTree(VirtualNode node, int a, List<String> ids,
-			List<String> hosts) {
+/*
+	public void buildTree(VirtualNode node, int a, List<String> ids, List<String> hosts) {
 		if (VirtualNode.N > 0) {
 			if (ids == null) {
 				ids = new ArrayList<String>(VirtualNode.N);
@@ -42,7 +42,7 @@ public class VirtualNode {
 			}
 		}
 	}
-
+*/
 	public Integer getN() {
 		return N;
 	}

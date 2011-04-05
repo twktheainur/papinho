@@ -5,7 +5,7 @@ import java.util.List;
 
 import utils.CmdLineParser;
 import DistMon.DistributedMonitor;
-import DistMon.DistributedMonitorView;
+//import DistMon.DistributedMonitorView;
 
 public class Main {
 
@@ -86,10 +86,8 @@ public class Main {
 			}
 			System.out.println("Runny Run!!!");
 			DistributedMonitor dm = new DistributedMonitor(name,pt, c);
-			DistributedMonitorView dmv = new DistributedMonitorView(dm);
-			dmv.setSize(300, 300);
+			//DistributedMonitorView dmv = new DistributedMonitorView(dm);
 			//dmv.setVisible(true);
-			dm.start();
 			System.out.println("Yawn...");
 	        //Thread.sleep(Long.MAX_VALUE);
 		}
