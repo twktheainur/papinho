@@ -34,11 +34,49 @@ public class Bootstrap {
 			arity = a;
 			System.out.println(a);
 		}
+		System.out.println("depth = " + depth);
+		/*
 		VirtualNode.N = N;
 		VirtualNode vn = new VirtualNode(null,arity,hosts);
 		vn.setId("node0");
-		vn.buildTree(vn, arity,null,hosts); 
-		return vn;
+		vn.buildTree(vn, arity,null,hosts);
+		*/
+		//---------------------CREATING AN ABSTRACT TREE----------------------
+		VirtualNode[] tree;
+		tree = new VirtualNode[N];
+		//special case for the root
+		tree[0] = new VirtualNode(null,arity,hosts);
+		tree[0].setId("node0");
+		for (int i = 1; i < arity+1; i++) {
+			tree[i] = new VirtualNode(tree[0],arity,hosts);
+			tree[i].setId("node" + i);
+			tree[0].addChild(tree[i]);
+		}
+		//for other nodes
+		for(int i = 1; i < N; i++) {
+			
+			//nodes that have #arity children
+			if( (i+1)*arity < N ) {
+				for (int j = i*arity + 1; j <= i*arity + arity; j++) {
+					tree[j] = new VirtualNode(tree[i],arity,hosts);
+					tree[j].setId("node" + j);
+					tree[i].addChild(tree[j]);
+				}
+			}
+						
+			//nodes that have less than #arity children
+			else if ( i == (int)((N-1)/arity) ) {
+				System.out.println("N = " + N);
+				for (int j = i*arity + 1; j < N; j++) {
+					tree[j] = new VirtualNode(tree[i],arity,hosts);
+					tree[j].setId("node" + j);
+					tree[i].addChild(tree[j]);
+				}
+			}
+		}
+		
+		//return vn;
+		return tree[0];
 	}
 	
 	/**
