@@ -24,6 +24,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import sun.management.ManagementFactory;
 import utils.CmdLineParser;
 import dto.NodeInfo;
 import dto.NodeInfoComposite;
@@ -78,7 +79,14 @@ public class DistributedMonitor extends Thread implements MessageListener {
 
 	private NodeInfo getNodeInfo() {
 		Random r = new Random();
-		NodeInfoLeaf fakeinfo = new NodeInfoLeaf(this.name, r.nextInt(56987));
+		
+		long mem=ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getInit();
+		
+		double cpuLoad=ManagementFactory.getOperatingSystemMXBean().getSystemLoadAverage();
+		
+		
+		NodeInfoLeaf fakeinfo = new NodeInfoLeaf(this.name, mem,cpuLoad);
+		
 		return fakeinfo;
 	}
 
@@ -94,7 +102,7 @@ public class DistributedMonitor extends Thread implements MessageListener {
 	}
 
 	public void initConnection(String topicName) {
-
+		
 		Hashtable properties = new Hashtable();
 		properties.put(Context.INITIAL_CONTEXT_FACTORY,
 				"org.exolab.jms.jndi.InitialContextFactory");
