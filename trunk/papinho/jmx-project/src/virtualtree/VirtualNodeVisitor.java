@@ -2,7 +2,6 @@ package virtualtree;
 
 /**
  * "Abstract" visitor interface
- * @author twk
  *
  */
 public interface VirtualNodeVisitor {

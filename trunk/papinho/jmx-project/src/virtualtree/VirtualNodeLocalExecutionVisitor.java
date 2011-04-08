@@ -11,7 +11,6 @@ import bootstrap.Main;
 /**
  * Concrete visitor for local execution of the distributed monitor nodes, this is used for testing purposes. In a production environment
  *  the remote visitor should be implemented
- * @author twk
  *
  */
 public class VirtualNodeLocalExecutionVisitor implements VirtualNodeVisitor {
