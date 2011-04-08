@@ -24,6 +24,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import bootstrap.Main;
+
 import sun.management.ManagementFactory;
 import utils.CmdLineParser;
 import dto.NodeInfo;
@@ -31,8 +33,16 @@ import dto.NodeInfoComposite;
 import dto.NodeInfoLeaf;
 import example.TextListener;
 
+/**
+ * This starts the node remotely, this class is used
+ * 
+ * @author jander
+ * @see Main
+ */
 public class DistributedMonitor extends Thread implements MessageListener {
 
+	private static final long TIME_THREAD=3000;
+	
 	private String topicName = null;
 	private Context jndiContext = null;
 	private TopicConnectionFactory topicConnectionFactory = null;
@@ -52,6 +62,16 @@ public class DistributedMonitor extends Thread implements MessageListener {
 	private NodeInfoComposite info;
 	private boolean isActive = true;
 
+	/**
+	 * Contructor for the list of remote nodes
+	 * 
+	 * @param name
+	 *            Name of the current node
+	 * @param parentName
+	 *            of the parent for this current node
+	 * @param children
+	 *            List of the children
+	 */
 	public DistributedMonitor(String name, String parent, List<String> children) {
 		this.name = name;
 		this.parent = parent;
@@ -66,7 +86,7 @@ public class DistributedMonitor extends Thread implements MessageListener {
 		}
 
 		initConnection(name);
-		
+
 		System.out.println("post init");
 
 		if (children != null) {
@@ -79,19 +99,20 @@ public class DistributedMonitor extends Thread implements MessageListener {
 
 	private NodeInfo getNodeInfo() {
 		Random r = new Random();
-		
-		long mem=ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getInit();
-		
-		double cpuLoad=ManagementFactory.getOperatingSystemMXBean().getSystemLoadAverage();
-		
-		
-		NodeInfoLeaf fakeinfo = new NodeInfoLeaf(this.name, mem,cpuLoad);
-		
+
+		long mem = ManagementFactory.getMemoryMXBean().getHeapMemoryUsage()
+				.getInit();
+
+		double cpuLoad = ManagementFactory.getOperatingSystemMXBean()
+				.getSystemLoadAverage();
+
+		NodeInfoLeaf fakeinfo = new NodeInfoLeaf(this.name, mem, cpuLoad);
+
 		return fakeinfo;
 	}
 
-	public void sendinfo() {
-		if(children!=null && children.size()==0){
+	private void sendinfo() {
+		if (children != null && children.size() == 0) {
 			dispatchForParent(getNodeInfo());
 		} else {
 			info.addNodeInfo(getNodeInfo());
@@ -101,8 +122,8 @@ public class DistributedMonitor extends Thread implements MessageListener {
 
 	}
 
-	public void initConnection(String topicName) {
-		
+	private void initConnection(String topicName) {
+
 		Hashtable properties = new Hashtable();
 		properties.put(Context.INITIAL_CONTEXT_FACTORY,
 				"org.exolab.jms.jndi.InitialContextFactory");
@@ -177,8 +198,14 @@ public class DistributedMonitor extends Thread implements MessageListener {
 
 	}
 
+	/**
+	 * Sends the agregated node information for the parent of the current node
+	 * 
+	 * @param agregated
+	 *            node information
+	 */
 	private void dispatchForParent(NodeInfo ni) {
-		System.out.println(name + " memory="+ni.getMemory());
+		System.out.println(name + " memory=" + ni.getMemory());
 		// If does not have a parent, do not dispatch
 		if (this.parent == null || this.parent.equals("null")) {
 			System.out
@@ -195,7 +222,7 @@ public class DistributedMonitor extends Thread implements MessageListener {
 			topicPublisher = topicSession.createPublisher(topic);
 			// message = topicSession.createTextMessage();
 			message = topicSession.createObjectMessage();
-			message.setObject((Serializable)ni);
+			message.setObject((Serializable) ni);
 			// message.setText(strmessage);
 			// System.out.println("Publishing message: " +message.getText());
 			topicPublisher.publish(message);
@@ -214,6 +241,9 @@ public class DistributedMonitor extends Thread implements MessageListener {
 
 	}
 
+	/**
+	 * Print the usage of this class
+	 */
 	private static void printUsage() {
 		System.out
 				.println("Usage: distmon -n Name -p ParentName -c Child1 -c Child2");
@@ -257,6 +287,10 @@ public class DistributedMonitor extends Thread implements MessageListener {
 		monitor.setActive(false);
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public boolean isActive() {
 		return isActive;
 	}
@@ -265,12 +299,16 @@ public class DistributedMonitor extends Thread implements MessageListener {
 		this.isActive = isActive;
 	}
 
+	/**
+	 * Establishes a period for sending the agregated node information for the parent of the current node
+	 */
+	@Override
 	public void run() {
 		System.out.println("Starting Monitor..");
 		while (isActive) {
 			sendinfo();
 			try {
-				Thread.sleep(3000);
+				Thread.sleep(TIME_THREAD);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -279,12 +317,15 @@ public class DistributedMonitor extends Thread implements MessageListener {
 		System.out.println("Finishing monitor...");
 	}
 
+	/**
+	 * Aggregates of the informations received by child nodes; 
+	 */
 	@Override
 	public void onMessage(Message msg) {
 		// TODO Auto-generated method stub
 		ObjectMessage om = (ObjectMessage) msg;
 		try {
-			NodeInfo childInfo = (NodeInfo)om.getObject();
+			NodeInfo childInfo = (NodeInfo) om.getObject();
 			info.addNodeInfo(childInfo);
 		} catch (JMSException e) {
 			// TODO Auto-generated catch block
