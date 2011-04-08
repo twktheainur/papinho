@@ -3,6 +3,7 @@
  */
 package bootstrap;
 
+import java.io.IOException;
 import java.util.List;
 
 import utils.JMSAdminServer;
@@ -87,7 +88,17 @@ public class Bootstrap {
 		VirtualNode tree = Bootstrap.buildTree(N, V, isArity, null);
 		ChannelCreatorVisitor cv = new ChannelCreatorVisitor();
 		tree.accept(cv);
-		VirtualNodeLocalExecutionVisitor vnlev = new VirtualNodeLocalExecutionVisitor("cmd /c start");
+		
+		String OS=System.getProperty("os.name");
+		
+		VirtualNodeLocalExecutionVisitor vnlev;
+		
+		if(OS.equals("Linux")){
+			vnlev = new VirtualNodeLocalExecutionVisitor("xterm -e ");	
+		}else{
+			vnlev = new VirtualNodeLocalExecutionVisitor("cmd /c start");
+		}
+						
 		tree.accept(vnlev);
 	}
 }
