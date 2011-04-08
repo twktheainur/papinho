@@ -6,22 +6,39 @@ import java.util.List;
 import utils.CmdLineParser;
 import DistMon.DistributedMonitor;
 
+/**
+ * Main class of distributed application
+ *
+ */
 public class Main {
 
 	/**
-	 * Print the usage for the main node creator application
-	 * @param caller
+	 * Prints the names of required parameters for
+	 * starting an application
+	 * 
+	 * @param caller error message to print
 	 */
 	private static void printUsage(String caller) {
-		System.err.println("From "+caller);
+		System.err.println("From "+ caller);
 		System.err
 				.println("Usage: distmon --uri JMS_URI [-b {-u,--user} username {-p,--password} password {-n,--nodes-number} num_nodes ({-a,--arity}|{-d,--depth})]|\n"
 						+ "[{-p,--parent} parent_topic {-c,--children} child_1,child_2,...]");
 		System.exit(2);
 	}
 
+	/**An address of JMS server*/
 	public static String URI;
 
+	/**
+	 * Main method.
+	 * Handles the parsing of provided arguments and provides the two ways 
+	 * to start an application: bootstrap and common.
+	 * 
+	 * Bootstrap way will create an abstract tree, topics and start
+	 * again the same program for each host without bootstrapping 
+	 * 
+	 * @param args the list of arguments provided
+	 */
 	public static void main(String[] args) throws Exception{
 		System.out.println("Booting...");
 		CmdLineParser parser = new CmdLineParser();
@@ -86,10 +103,8 @@ public class Main {
 			}
 			System.out.println("Runny Run!!!");
 			DistributedMonitor dm = new DistributedMonitor(name,pt, c);
-			//DistributedMonitorView dmv = new DistributedMonitorView(dm);
-			//dmv.setVisible(true);
 			System.out.println("Yawn...");
-	        //Thread.sleep(Long.MAX_VALUE);
+	        
 		}
 	}
 }

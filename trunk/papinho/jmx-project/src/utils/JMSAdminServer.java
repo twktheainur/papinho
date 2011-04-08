@@ -16,14 +16,7 @@ public class JMSAdminServer {
 	Context context;
 
 	public JMSAdminServer(String url, String username, String password) {
-		/*
-		 * Hashtable<String,String> properties = new Hashtable<String,String>();
-		 * properties.put(Context.INITIAL_CONTEXT_FACTORY,
-		 * "org.exolab.jms.jndi.InitialContextFactory");
-		 * properties.put(Context.PROVIDER_URL, url); try{ context = new
-		 * InitialContext(properties); } catch (Exception e){
-		 * e.printStackTrace(); }
-		 */
+		
 		if (username != null && password != null) {
 			try {
 				admin = AdminConnectionFactory.create(url, username, password);
