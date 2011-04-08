@@ -15,13 +15,25 @@ import DistMon.DistributedMonitor;
 
 
 /**
- * @author twk
- * 
+ * Bootstrap class to create abstract tree, topics,
+ * and run a JVM for each abstract node
+ *
  */
 public class Bootstrap {
 
+	/** JMSAdminServer object to create a connection factory */
 	public static JMSAdminServer adminServer;
 	
+	/**  
+	 * Build an abstract tree of N elements with given arity/depth
+	 * 
+	 * @param N the number of nodes
+	 * @param value the arity or depth of tree
+	 * @param useArity consider argument 'value' as arity or as depth
+	 * @param hosts the list of hosts which represents the tree
+	 * 
+	 * @return the root of an abstract tree
+	 */
 	public static VirtualNode buildTree(int N, int value, boolean useArity, List<String> hosts){
 		int arity = -1;
 		int depth = -1;
@@ -36,12 +48,7 @@ public class Bootstrap {
 			System.out.println(a);
 		}
 		System.out.println("depth = " + depth);
-		/*
-		VirtualNode.N = N;
-		VirtualNode vn = new VirtualNode(null,arity,hosts);
-		vn.setId("node0");
-		vn.buildTree(vn, arity,null,hosts);
-		*/
+		
 		//---------------------CREATING AN ABSTRACT TREE----------------------
 		VirtualNode[] tree;
 		tree = new VirtualNode[N];
@@ -76,26 +83,41 @@ public class Bootstrap {
 			}
 		}
 		
-		//return vn;
 		return tree[0];
 	}
 	
 	/**
-	 * @param args
+	 * Bootstraps the distributed application.
+	 * 
+	 * 1. Creates a connection factory
+	 * 2. Builds an abstract tree
+	 * 3. Creates a topic for each node of the tree
+	 * 4. Runs JVM for each node of the abstract tree
+	 * 
+	 * @param jmsURI the address of JMS server
+	 * @param username name of the user
+	 * @param password user's password
+	 * @param N number of nodes for an abstract tree
+	 * @param V arity/depth of an abstract tree
+	 * @param isArity specifies if arity or depth is provided
+	 * @param hosts the list of hosts which represents the tree
 	 */
-	public static void bootstrap(String jmsURI,String username,String password,int N, int V, boolean isArity ,String[] hosts) {
+	public static void bootstrap(String jmsURI, String username, String password, 
+			int N, int V, boolean isArity ,String[] hosts) {
+		
 		adminServer = new JMSAdminServer(jmsURI, username, password);
+		
 		VirtualNode tree = Bootstrap.buildTree(N, V, isArity, null);
+		
 		ChannelCreatorVisitor cv = new ChannelCreatorVisitor();
 		tree.accept(cv);
 		
 		String OS=System.getProperty("os.name");
 		
 		VirtualNodeLocalExecutionVisitor vnlev;
-		
 		if(OS.equals("Linux")){
 			vnlev = new VirtualNodeLocalExecutionVisitor("xterm -e ");	
-		}else{
+		} else{
 			vnlev = new VirtualNodeLocalExecutionVisitor("cmd /c start");
 		}
 						
