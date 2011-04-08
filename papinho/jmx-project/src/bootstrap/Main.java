@@ -5,12 +5,12 @@ import java.util.List;
 
 import utils.CmdLineParser;
 import DistMon.DistributedMonitor;
-//import DistMon.DistributedMonitorView;
 
 public class Main {
 
 	/**
-	 * @param args
+	 * Print the usage for the main node creator application
+	 * @param caller
 	 */
 	private static void printUsage(String caller) {
 		System.err.println("From "+caller);
