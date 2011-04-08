@@ -111,6 +111,9 @@ public class DistributedMonitor extends Thread implements MessageListener {
 		return fakeinfo;
 	}
 
+	/**
+	 * Sends aggregated information from the children and current node for the parent node.
+	 */
 	private void sendinfo() {
 		if (children != null && children.size() == 0) {
 			dispatchForParent(getNodeInfo());
@@ -122,6 +125,10 @@ public class DistributedMonitor extends Thread implements MessageListener {
 
 	}
 
+	/**
+	 * Starts JMS connection 
+	 * @param name of the parent topic in which this children should be subscribed
+	 */
 	private void initConnection(String topicName) {
 
 		Hashtable properties = new Hashtable();
