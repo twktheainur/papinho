@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+
+<!-- OpenJMS configuration:
+     . RMI connectors  
+     . JDBM persistency
+     . embedded JNDI provider
+     . embedded RMI registry, running on port 1099
+     . preconfigured destinations
+
+     NOTES: this configuration shows all configuration elements relevant
+            when using an RMI connector. 
+ -->
+
+<Configuration>
+
+  <!-- Optional. This represents the default configuration  -->
+  <ServerConfiguration host="localhost" embeddedJNDI="true" />
+   <TcpConfiguration port="3035" jndiPort="3036" adminPort="3037" bindAll="true" />
+  
+  <!-- Required when using an RMI connector -->
+  <Connectors>
+    <Connector scheme="rmi">
+      <ConnectionFactories>
+        <QueueConnectionFactory name="JmsQueueConnectionFactory" />
+        <TopicConnectionFactory name="JmsTopicConnectionFactory" />
+      </ConnectionFactories>
+    </Connector>
+	<Connector scheme="tcp">
+      <ConnectionFactories>
+        <QueueConnectionFactory name="JmsQueueConnectionFactory" />
+        <TopicConnectionFactory name="JmsTopicConnectionFactory" />
+      </ConnectionFactories>
+    </Connector>
+  </Connectors>
+    
+  <!-- Required  -->
+  <DatabaseConfiguration>
+    <JdbmDatabaseConfiguration name="openjms.db" />
+  </DatabaseConfiguration>
+
+  <!-- Required -->    
+  <AdminConfiguration script="${openjms.home}\bin\startup.bat" />
+    
+  <!-- Optional. If not specified, no destinations will be created -->
+  <AdministeredDestinations>
+    <AdministeredTopic name="topic1">
+      <Subscriber name="sub1" />
+      <Subscriber name="sub2" />
+    </AdministeredTopic>
+  
+    <AdministeredQueue name="queue1" />
+    <AdministeredQueue name="queue2" />
+    <AdministeredQueue name="queue3" />
+  </AdministeredDestinations>
+
+  <!-- Optional. If not specified, no users will be created -->
+  <Users>
+    <User name="admin" password="openjms" /> 
+  </Users>
+
+</Configuration>
