@@ -8,12 +8,20 @@ import java.util.List;
 
 import bootstrap.Main;
 
+/**
+ * Concrete visitor for local execution of the distributed monitor nodes, this is used for testing purposes. In a production environment
+ *  the remote visitor should be implemented
+ * @author twk
+ *
+ */
 public class VirtualNodeLocalExecutionVisitor implements VirtualNodeVisitor {
 	private String osPrefix;
-
+	/**
+	 * Constructor
+	 * @param osPrefix prefix appened to the command run for each distributed node
+	 */
 	public VirtualNodeLocalExecutionVisitor(String osPrefix) {
 		this.osPrefix = osPrefix;
-
 	}
 
 	String getOsPrefix() {
@@ -24,6 +32,10 @@ public class VirtualNodeLocalExecutionVisitor implements VirtualNodeVisitor {
 		osPrefix = prefix;
 	}
 
+	/**
+	 * Executes each node locally in a different jvm
+	 * @param node currently visited node
+	 */
 	public void visit(VirtualNode node) {
 		List<String> args = new ArrayList<String>();
 		String cmd = getOsPrefix()+ " " + "java -jar dismon.jar --uri " + Main.URI +" -m "+node.getId() + "Topic "; 

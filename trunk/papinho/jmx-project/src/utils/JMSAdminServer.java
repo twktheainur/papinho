@@ -10,13 +10,22 @@ import javax.naming.Context;
 import org.exolab.jms.administration.AdminConnectionFactory;
 import org.exolab.jms.administration.JmsAdminServerIfc;
 
+/**
+ * JMS Administration connection class
+ *
+ */
 public class JMSAdminServer {
 
 	JmsAdminServerIfc admin;
 	Context context;
 
+	/**
+	 * Constructor
+	 * @param url url of the jms server
+	 * @param username admin username of the jms server
+	 * @param password admin password of the jms server
+	 */
 	public JMSAdminServer(String url, String username, String password) {
-		
 		if (username != null && password != null) {
 			try {
 				admin = AdminConnectionFactory.create(url, username, password);
@@ -35,6 +44,10 @@ public class JMSAdminServer {
 
 	}
 
+	/**
+	 * Lists all the topics on the jms server
+	 * @throws JMSException 
+	 */
 	@SuppressWarnings("rawtypes")
 	public void listTopics() throws JMSException {
 		Vector destinations = admin.getAllDestinations();
@@ -48,6 +61,11 @@ public class JMSAdminServer {
 		}
 	}
 
+	/**
+	 * Creates a topic if it does not already exist
+	 * @param name name of the topic
+	 * @throws JMSException
+	 */
 	public void createTopic(String name) throws JMSException {
 		if (!admin.destinationExists(name)) {
 			if (!admin.addDestination(name, false)) {
@@ -55,7 +73,9 @@ public class JMSAdminServer {
 			}
 		}
 	}
-
+	/**
+	 * Closes the administrator connection
+	 */
 	public void close() {
 		admin.close();
 	}

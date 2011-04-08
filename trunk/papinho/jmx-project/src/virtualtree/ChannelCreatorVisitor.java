@@ -2,7 +2,9 @@ package virtualtree;
 
 import bootstrap.Bootstrap;
 
-
+/**
+ * Concrete visitor for the creation of the topics
+ */
 public class ChannelCreatorVisitor implements VirtualNodeVisitor {
 	public void visit(VirtualNode node) {
 		String topicName = node.getId() + "Topic";
