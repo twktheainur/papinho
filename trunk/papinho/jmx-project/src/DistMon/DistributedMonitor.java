@@ -42,7 +42,7 @@ public class DistributedMonitor extends Thread implements MessageListener {
 
 	private static final long TIME_THREAD=3000;
 	
-	private String topicName = null;
+	//private String topicName = null;
 	private Context jndiContext = null;
 	private TopicConnectionFactory topicConnectionFactory = null;
 	private TopicConnection topicConnection = null;
@@ -50,10 +50,10 @@ public class DistributedMonitor extends Thread implements MessageListener {
 	private Topic topic = null;
 	private TopicSubscriber topicSubscriber = null;
 	private TopicPublisher topicPublisher = null;
-	private TextListener topicListener = null;
+	//private TextListener topicListener = null;
 	private ObjectMessage message = null;
-	private InputStreamReader inputStreamReader = null;
-	private char answer = '\0';
+	//private InputStreamReader inputStreamReader = null;
+	//private char answer = '\0';
 	private Context context = null;
 	private String name;
 	private String parent;
