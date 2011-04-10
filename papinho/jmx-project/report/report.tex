@@ -16,7 +16,7 @@
 %\usepackage{wrapfig}
 %\usepackage{subfig}
 %\usepackage[left=1cm, top=1cm, right=1cm, bottom=1cm, nohead, nofoot]{geometry}
-\title {RMI-based chat application: Papinho}
+\title {Applying JMS as a reliable and scalable communication channel for JMX information dispatching}
 \author{Andon Tchechmedjiev, Jander Nascimento}
 % \linespread{0.9}
 % \usepackage[small,compact]{titlesec}
@@ -42,9 +42,9 @@ Overall, this prototype allows for the user to customize the tree by choosing th
 \section{Used API's}
 
 Java Specification Request, or JSR, specify a completely detailed specification allowing that some software that follow the specification be able to run in any container that respects the JSR.
-JSR 914 states the Java Messaging Service API specification, we have couple containers that implement this JSR, the we have chosen the OpenJMS.
+JSR 914 states the Java Messaging Service API specification, we have couple containers that implement this JSR, we have chosen the OpenJMS implementation to perform the tests.
 Java Management Extension provides a dynamic and modular platform to monitor devices or applications connected to a network.
-As JMX has a native support in Java, we just used the built-in support to get local information from the nodes. 
+As JMX has a native support in Java, we just used the built-in support to get local information from the nodes and dispatch those informations through a JMS topic channel. 
 
 \section{Architecture}
 \section{Applied design patterns}
