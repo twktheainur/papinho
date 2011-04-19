@@ -1,0 +1,33 @@
+/** Add css rules here for your application. */
+
+
+/** Example rules used by the template application (remove for your app) */
+h1 {
+  display:block;
+  width:95%;
+  min-width:320px;
+  height: 50px;
+  background-color:#660035;
+  margin:0;
+  margin-left:2.5%;
+  text-align:center;
+  color: White;
+}
+#login{
+  width:95%;
+  height:100px;
+  min-width:320px;
+  color: White;
+  background-color:#880035;
+  float:left;
+  border:10 px solid black;
+  margin-left:2.5%;
+}
+
+#offers{
+background-color:#cc0035;
+margin-top:100px;
+min-width:320px;
+width:95%;
+margin-left:2.5%;
+}
