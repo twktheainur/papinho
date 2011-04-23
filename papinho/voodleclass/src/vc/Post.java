@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.Calendar;
 import java.util.Date;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -33,7 +34,11 @@ public class Post extends HttpServlet {
 			}
 			
 			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
+			Entity message = new Entity("Message");
+			message.setProperty("userName", name);
+			message.setProperty("message", text);
+			message.setProperty("date",Calendar.getInstance().getTime());
+			datastore.put(message);
 			
 			resp.setContentType("text/html");
 			resp.getWriter().println("<html><head><meta http-equiv='refresh' content='0;URL=/'></head></html>");
