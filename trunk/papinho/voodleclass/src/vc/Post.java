@@ -2,6 +2,9 @@ package vc;
 
 import java.io.IOException;
 
+import javax.mail.Session;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,19 +27,23 @@ public class Post extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
+		
 			String name = request.getParameter("user");
+			String text = request.getParameter("post");
+			
+			if(text==null||text.trim().length()==0){
+				response.sendRedirect("/vclass2");
+				return;
+			}
 			
 			if (request.getUserPrincipal() != null){
 				name=request.getUserPrincipal().getName();
 			}
 			
-			String text = request.getParameter("post");
 			if(name==null){
 				name = "Anonymous";
 			}
-			if(text==null){
-				throw new IOException("Type a message buddy!");
-			}
+			
 			
 			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 			Entity message = new Entity("Message");
