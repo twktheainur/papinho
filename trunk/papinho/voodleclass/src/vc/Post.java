@@ -26,13 +26,16 @@ public class Post extends HttpServlet {
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
+			throws IOException, ServletException {
 		
 			String name = request.getParameter("user");
 			String text = request.getParameter("post");
 			
 			if(text==null||text.trim().length()==0){
-				response.sendRedirect("/vclass2");
+				//response.sendRedirect("/vclass2");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/vclass2");
+				request.setAttribute("err", "post");
+				dispatcher.forward(request, response);
 				return;
 			}
 			
@@ -51,13 +54,15 @@ public class Post extends HttpServlet {
 			message.setProperty("message", text);
 			message.setProperty("date",Calendar.getInstance().getTime());
 			datastore.put(message);
+			request.removeAttribute("err");
+			
 			response.sendRedirect("/vclass2");
 			
 			
 	}
 
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException {
+			throws IOException, ServletException {
 		doGet(req, resp);
 	}
 }
