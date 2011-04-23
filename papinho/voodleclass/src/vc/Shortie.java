@@ -35,7 +35,6 @@ public class Shortie extends HttpServlet {
 		pw.println("</head>");
 		pw.println("<body>");
 		pw.println("<h1>Welcome to shortie!</h1>");
-		
 		pw.println("<div id='login'>");
 		pw.println("</div>");
 		pw.println("<div id='post'>");
@@ -54,8 +53,15 @@ public class Shortie extends HttpServlet {
 			
 		}
 		
+		String css="";
 		
-		pw.println("<textarea name='post' cols='100'>");
+		if(request.getAttribute("err")!=null&&request.getAttribute("err").equals("post")){
+			css="border-color:red;";
+		}else{
+			css="";
+		}
+			
+		pw.println("<textarea name='post' style='"+css+"'  cols='100'>");
 		pw.println("</textarea>");
 		pw.println("<br/>");
 		pw.println("<input type='submit' name='submit' value='Post'/>");
