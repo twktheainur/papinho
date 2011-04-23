@@ -22,7 +22,7 @@ public class Post extends HttpServlet {
 		super();
 	}
 
-	public void doGet(HttpServletRequest request, HttpServletResponse resp)
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 			String name = request.getParameter("user");
 			
@@ -44,9 +44,8 @@ public class Post extends HttpServlet {
 			message.setProperty("message", text);
 			message.setProperty("date",Calendar.getInstance().getTime());
 			datastore.put(message);
+			response.sendRedirect("/vclass2");
 			
-			resp.setContentType("text/html");
-			resp.getWriter().println("<html><head><meta http-equiv='refresh' content='0;URL=/'></head></html>");
 			
 	}
 
