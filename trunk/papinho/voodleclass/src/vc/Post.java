@@ -1,13 +1,17 @@
 package vc;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.util.Date;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+
+
 public class Post extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -28,8 +32,12 @@ public class Post extends HttpServlet {
 				throw new IOException("Type a message buddy!");
 			}
 			
+			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+			
 			resp.setContentType("text/html");
 			resp.getWriter().println("<html><head><meta http-equiv='refresh' content='0;URL=/'></head></html>");
+			
 	}
 
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
