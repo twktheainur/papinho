@@ -1,2 +1,0 @@
-serviceClass: bzr.client.GreetingService
-path: 8E6B96C40EED2CE73471D76CD9F630DD.gwt.rpc
