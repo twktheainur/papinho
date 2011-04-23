@@ -23,7 +23,7 @@
 \section{Prototype}
 
 The \emph{Shortie} is the name of the project to validate the Google Cloud Service as a cloud service.
-\emph{Shortie} is a twitter-like application for posting messages, but with no characters limitation. It uses a simple authentication service for Authentication.
+\emph{Shortie} is a twitter-like application for posting messages, but with no characters limitation. It uses a simple authentication service for Authentication and a data storage service, that is already provided by Google App Engine.
 
 \section{Specification}
 
@@ -31,11 +31,12 @@ The application will use a couple API's, already provided by google, to implemen
 
 \begin{enumerate}
 \item Java Servlet API
+\item Java Data Object / Data Persistence	
 \item Google APP Engine for Java
 \end{enumerate}
 
 
-A scallable data store is also provided for free use. Two options of data store implementations are offered, each of them are different in the availability and consistency schema, those service specification are JDO(Java Data Object) or JPA(Java Persistent API), implemented by DataNucleus Access Platform, which is the implementation of these two standards.
+A scallable data store is also provided for free use. Two options of data store implementations are offered, each of them are different in the availability and consistency schema, those service specification are JDO(Java Data Object) or JPA(Java Persistent API), implemented by DataNucleus Access Platform - implementation of these two standards.
 
 Along with the persistent API Google App Engine offers a cache for the Queries performed and the calculations, which are: MemCache engine. The specification is in the JSR 107 (JCache).
 
@@ -43,23 +44,27 @@ Two other services are offered: Mail and Image services. Mail that implements Ja
 
 \section{Google Cloud service}
 
-Google Clouse service for Java runs on the version 6, but has support for versions 5 and on. The Google Cloud APP automatically provices the Java Servlet API support.
-The only requirement is the deployment is the deployment descriptor. 
-The JVM runs on a secure sandbox environment assuring that one running application do not interfere in anothers application performance.
+Google Clouse service for Java runs on the version 6, but has support for versions 5. 
+The Google Cloud APP automatically provides the Java Servlet API support. The only requirement is that the application application have a deployment descriptor properly written. 
+The JVM runs on a secure sandbox environment assuring that one running application do not interfere in another application performance.
 
 \subsection{Account Creation}
 
 For the account creation the requirements are: a google account (gmail for instance) and a telephone number for the Google App engine validation.
 
-After the account creation is possible to check informations like:
+After the account have been created is possible to check the following informations:
 \begin{enumerate}
 \item CPU Time
 \item Bandwidth usage
 \end{enumerate}
 
+Those informations are available only if you have a properly deployed application.
+
 \subsection{Google Plugin}
 
 Google Plugin for Eclipse is an extension for eclipse that adds to it the google project wizard creation and debug configuration for Google App Engline project.
+Google Plugin allows to deploy your application easily into Google App Engine, directly from Eclipse.
+After installing Google Plugin for Eclipse (see \url{http://code.google.com/appengine/docs/java/tools/eclipse.html}), you can use the option \emph{File -> New> Web Application Project} to create the basic project infra structure.
 
 \subsection{Debugging}
 \subsection{Deployment}
