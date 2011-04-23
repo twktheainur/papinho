@@ -14,6 +14,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
@@ -49,10 +50,7 @@ public class Shortie extends HttpServlet {
 			sb.append("I'm <input type='text' name='user' value='Anon Ymous'/>(or <a href='%s'>sign in</a>)<br/>");
 			String htmlparsed=String.format(sb.toString(),userService.createLoginURL(thisURL) );
 			
-			
-			
 			pw.println(htmlparsed);
-			
 			
 		}
 		
@@ -66,6 +64,8 @@ public class Shortie extends HttpServlet {
 		pw.println("<div id='messages'>");
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		Query q = new Query("Message");
+		q.addSort("date", SortDirection.DESCENDING);
+
 		PreparedQuery pq = datastore.prepare(q);
 		for (Entity result : pq.asIterable()) {
 			  String name = (String) result.getProperty("userName");
