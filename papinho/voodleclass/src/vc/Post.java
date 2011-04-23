@@ -22,10 +22,15 @@ public class Post extends HttpServlet {
 		super();
 	}
 
-	public void doGet(HttpServletRequest req, HttpServletResponse resp)
+	public void doGet(HttpServletRequest request, HttpServletResponse resp)
 			throws IOException {
-			String name = req.getParameter("name");
-			String text = req.getParameter("post");
+			String name = request.getParameter("name");
+			
+			if (request.getUserPrincipal() != null){
+				name=request.getUserPrincipal().getName();
+			}
+			
+			String text = request.getParameter("post");
 			if(name==null){
 				name = "Anonymous";
 			}
