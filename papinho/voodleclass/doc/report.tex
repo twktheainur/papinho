@@ -22,17 +22,24 @@
 
 \section{Prototype}
 
-The \emph{Shortie} is the name of the project for testing and validate the Google Cloud Service.
-\emph{Shortie} is a twitter-like application for posting messages, but with no characters limitation. It uses a simple authentication service for Authentication and Autorization.
+The \emph{Shortie} is the name of the project to validate the Google Cloud Service as a cloud service.
+\emph{Shortie} is a twitter-like application for posting messages, but with no characters limitation. It uses a simple authentication service for Authentication.
 
 \section{Specification}
 
-The application will use a couple API's to provide a basic structure for the application development.
+The application will use a couple API's, already provided by google, to implement the basic functionalities required by the application. 
 
 \begin{enumerate}
 \item Java Servlet API
 \item Google APP Engine for Java
 \end{enumerate}
+
+
+A scallable data store is also provided for free use. Two options of data store implementations are offered, each of them are different in the availability and consistency schema, those service specification are JDO(Java Data Object) or JPA(Java Persistent API), implemented by DataNucleus Access Platform, which is the implementation of these two standards.
+
+Along with the persistent API Google App Engine offers a cache for the Queries performed and the calculations, which are: MemCache engine. The specification is in the JSR 107 (JCache).
+
+Two other services are offered: Mail and Image services. Mail that implements Java Mail Service specifications for dealing with e-mails. The Image allow the user to manipulate images performing several operations like cropping, scale, rotating and color enhancements.
 
 \section{Google Cloud service}
 
@@ -49,8 +56,6 @@ After the account creation is possible to check informations like:
 \item CPU Time
 \item Bandwidth usage
 \end{enumerate}
-
-
 
 \subsection{Google Plugin}
 
