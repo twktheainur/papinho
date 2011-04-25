@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.security.Principal;
 import java.util.Calendar;
 import java.util.Date;
 import com.google.appengine.api.datastore.DatastoreService;
@@ -29,13 +30,17 @@ public class Post extends HttpServlet {
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
-		
+		    boolean isAnon = true;
 			String name = request.getParameter("user");
 			String text = request.getParameter("post");
 			
+			Principal user = request.getUserPrincipal();
+			if(user!=null){
+				isAnon = false;
+			}
 			if(text==null||text.trim().length()==0){
 				//response.sendRedirect("/vclass2");
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/vclass2");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/");
 				request.setAttribute("err", "post");
 				dispatcher.forward(request, response);
 				return;
@@ -55,10 +60,11 @@ public class Post extends HttpServlet {
 			message.setProperty("userName", name);
 			message.setProperty("message", text);
 			message.setProperty("date",Calendar.getInstance().getTime());
+			message.setProperty("anon", isAnon);
 			datastore.put(message);
 			request.removeAttribute("err");
 			
-			response.sendRedirect("/vclass2");
+			response.sendRedirect("/");
 			
 			
 	}
