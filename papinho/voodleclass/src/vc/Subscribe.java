@@ -2,14 +2,12 @@ package vc;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.security.Principal;
-import java.util.Calendar;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -22,7 +20,7 @@ import com.google.appengine.api.datastore.Query;
  * Servlet is responsible for adding the new post to the pool and give the user feedback about the action.
  * @author jander/andon
  */
-public class Post extends HttpServlet {
+public class Subscribe extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
@@ -31,47 +29,31 @@ public class Post extends HttpServlet {
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
-		    boolean isAnon = true;
-		    String name = "Anonymous";
-			name = request.getParameter("user");
-			String text = request.getParameter("post");
 			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 			Principal user = request.getUserPrincipal();
-			if(text==null||text.trim().length()==0){
-				response.sendRedirect("/");
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/");
-				request.setAttribute("err", "post");
-				dispatcher.forward(request, response);
-				return;
-			}
 			
+			String qarr[] = request.getPathInfo().split("/");
+			String queryName="";
+			response.setContentType("text/plain");
+			if(qarr.length<2){
+				response.getWriter().println("Redirect short");
+				response.sendRedirect("/");
+			} else {
+			   queryName= qarr[1];
+			}
 			if (user != null){
-				name=user.getName();
-				isAnon = false;
+				String name=user.getName();
 				Query q = new Query("User");
-				q.addFilter("userName", Query.FilterOperator.EQUAL, name);
-				q.setKeysOnly();
+				response.getWriter().println(queryName);
+				q.addFilter("userName", Query.FilterOperator.EQUAL, queryName);
 				PreparedQuery pq = datastore.prepare(q);
-				if(pq.asList(FetchOptions.Builder.withLimit(1)).size()==0){
-					Entity euser = new Entity("User",name);
-					euser.setProperty("userName", name); 
-					datastore.put(euser);
-					Entity selfsub = new Entity("Subscription",name+"/"+name);
-					selfsub.setProperty("userName", name);
-					selfsub.setProperty("to", name);
+				if(pq.asList(FetchOptions.Builder.withLimit(1)).size()!=0){
+					Entity sub = new Entity("Subscription",name+"/"+queryName);
+					sub.setProperty("userName", name);
+					sub.setProperty("to", queryName);
+					datastore.put(sub);
 				}
 			}
-			
-			Entity message = new Entity("Message");
-			message.setProperty("userName", name);
-			message.setProperty("message", text);
-			message.setProperty("date",Calendar.getInstance().getTime());
-			message.setProperty("anon", isAnon);
-			datastore.put(message);
-			request.removeAttribute("err");
 			response.sendRedirect("/");
-			
-			
 	}
-
 }
