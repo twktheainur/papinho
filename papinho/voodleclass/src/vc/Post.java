@@ -16,15 +16,17 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 
 
+/**
+ * Servlet is responsible for adding the new post to the pool and give the user feedback about the action.
+ * @author jander/andon
+ */
 public class Post extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	
-	
-	public Post() {
-		super();
-	}
 
+	/**
+	 * Persist information (post the message)
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		
@@ -61,8 +63,4 @@ public class Post extends HttpServlet {
 			
 	}
 
-	public void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException, ServletException {
-		doGet(req, resp);
-	}
 }

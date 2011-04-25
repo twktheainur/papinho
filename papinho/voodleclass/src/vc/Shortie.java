@@ -20,6 +20,10 @@ import com.google.appengine.api.users.UserServiceFactory;
 
 
 
+/**
+ * Servlet for the user interface, prints out the HTML
+ * @author jander
+ */
 @SuppressWarnings("serial")
 public class Shortie extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -88,10 +92,7 @@ public class Shortie extends HttpServlet {
 			  sb.append("</div>");
 			 
 			  String htmlparsed=String.format(sb.toString(),name,tsFormatted,message);
-			  
-			 
-			  //pw.println("<div id='message'>\n<b>"+name+"</b>\n<br/>\n"+ts.toString()+"\n<p>"+message+"</p></div>\n");
-			  
+
 			  pw.println(htmlparsed);
 			}
 		pw.println("</div>");
