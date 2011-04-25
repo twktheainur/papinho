@@ -3,8 +3,8 @@ package vc;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.Principal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,21 +26,15 @@ import com.google.appengine.api.users.UserServiceFactory;
  * @author jander
  */
 @SuppressWarnings("serial")
-public class UserMessages extends HttpServlet {
+public class UserList extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 		response.setContentType("text/html");
 		String thisURL = request.getRequestURI();
 		UserService userService = UserServiceFactory.getUserService();
-		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-		String qarr[] = request.getPathInfo().split("/");
-		String queryName="";
-		if(qarr.length<2){
-			response.sendRedirect("/");
-		} else {
-		   queryName= qarr[1];
-		}
-		
+		DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
+
 		PrintWriter pw = response.getWriter();
 		pw.println("<!DOCTYPE HTML>");
 		pw.println("<html>");
@@ -54,63 +48,52 @@ public class UserMessages extends HttpServlet {
 		pw.println("<h1><a href='/'><img src='/images/logo.png' alt='Welcome to shortie'/></a></h1>");
 		pw.println("<div id='login'>");
 		Principal user = request.getUserPrincipal();
+		List<String> subs = null;
 		if (user != null) {
 			String name = user.getName();
 			String login = String
-			.format("I'm logged in as <strong>%s</strong> <a href='%s'>Sign out</a>",
-					name, userService.createLogoutURL(thisURL));
-			
+					.format("I'm logged in as <strong>%s</strong> <a href='%s'>Sign out</a>",
+							name, userService.createLogoutURL(thisURL));
 			pw.println(login);
+			pw.println("<a href='/user/" + user.getName() + "'>My Profile</a>");
 			pw.println("<a href='/subscriptions'>My Subscriptions</a>");
-			Query q = new Query("Subscriptions");
+			subs = new ArrayList<String>();
+			Query q = new Query("Subscription");
 			q.addFilter("userName", Query.FilterOperator.EQUAL, name);
-			q.addFilter("to", Query.FilterOperator.EQUAL, queryName);
 			PreparedQuery pq = datastore.prepare(q);
-			if(pq.asList(FetchOptions.Builder.withLimit(1)).size()!=0){
-				pw.println("<a href='/subscribe/"+queryName+"'>Subscribe!</a>");
+			for (Entity e : pq.asIterable()) {
+				subs.add((String) e.getProperty("to"));
 			}
 		} else {
 
 			StringBuffer sb = new StringBuffer();
-			sb.append("I'm an <strong>Anonymous</strong> user <a href='%s'>Sign in<img src='images/gl.jpg' alt='Google Accounts'/></a>");
+			sb.append("I'm an <strong>Anonymous</strong> user <a href='%s'>Sign in<img src='/images/gl.jpg' alt='Google Accounts'/></a>");
 			String htmlparsed = String.format(sb.toString(),
 					userService.createLoginURL(thisURL));
 			pw.println(htmlparsed);
-
 		}
-		pw.println("<a href='/users'>User list</a>");
 		pw.println("</div>");
 		pw.println("<div id='content'>");
 		pw.println("<div id='messages'>");
-		pw.println("<h2>"+queryName+"'s feed:</h2>");
-		Query q = new Query("Message");
-		q.addFilter("userName", Query.FilterOperator.EQUAL, queryName);
-		q.addSort("date", SortDirection.DESCENDING);
-
+		pw.println("<h2>Users:</h2>");
+		Query q = new Query("User");
+		q.addSort("userName", SortDirection.DESCENDING);
 		PreparedQuery pq = datastore.prepare(q);
 		for (Entity result : pq.asIterable(FetchOptions.Builder.withLimit(30))) {
 			String name = (String) result.getProperty("userName");
-			String message = (String) result.getProperty("message");
-			Date ts = (Date) result.getProperty("date");
-			Boolean anon = (Boolean) result.getProperty("anon");
-
-			SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-			String tsFormatted = sd.format(ts);
-
-			StringBuffer sb = new StringBuffer();
-			sb.append("<div class='message'>");
-			if (anon!=null && !anon) {
-				sb.append("<strong><a href='/user/"+name+"'>%s</a></strong> (on %s )<br/>\n");
-			} else {
-				sb.append("<strong>%s</strong> (on %s )<br/>\n");
+			pw.println("<div class='message'>");
+			pw.println("<strong><a href='/user/" + name + "'>" + name
+					+ "</a>\n");
+			if (user!=null && !name.equals(user.getName())) {
+				if (user != null && !subs.contains(name)) {
+					pw.println("<a href='/subscribe/" + name
+							+ "'>Subscribe!</a>");
+				} else {
+					pw.println("<a href='/unsubscribe/" + name
+							+ "'>Unsubscribe!</a>");
+				}
 			}
-			sb.append("%s<br/>");
-			sb.append("</div>");
-
-			String htmlparsed = String.format(sb.toString(), name, tsFormatted,
-					message);
-
-			pw.println(htmlparsed);
+			pw.println("</div>");
 		}
 		pw.println("</div>");
 		pw.println("</div>");
