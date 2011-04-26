@@ -13,7 +13,7 @@
 
 \begin{document}
 
-\title{Distributed System - Google Deployment}
+\title{Distributed System - Google Cloud Service}
 
 \author{Andon Tchechmedjiev, 
 \and Jander Nascimento}
@@ -45,7 +45,9 @@ Two other services are offered: Mail and Image services. Mail that implements Ja
 \section{Google Cloud service}
 
 Google Cloud service for Java runs on the version 6, but has support for versions 5. 
+
 The Google Cloud APP automatically provides the Java Servlet API support. The only requirement is that the application application have a deployment descriptor properly written. 
+
 The JVM runs on a secure sandbox environment assuring that one running application do not interfere in another application performance.
 
 \subsection{Account Creation}
@@ -63,13 +65,33 @@ Those informations are available only if you have a properly deployed applicatio
 \subsection{Google Plugin}
 
 Google Plugin for Eclipse is an extension for eclipse that adds to it the google project wizard creation and debug configuration for Google App Engine project.
+
 Google Plugin allows to deploy your application easily into Google App Engine, directly from Eclipse.
+
 After installing Google Plugin for Eclipse (see \url{http://code.google.com/appengine/docs/java/tools/eclipse.html}), you can use the option \emph{File / New / Google / Web Application Project} to create the basic project infra structure.
 
-\subsection{Debugging}
 \subsection{Deployment}
+
+The deployment can be done in two different ways:
+
+\begin{itemize}
+\item Using Google Plugin for eclipse
+\item Using Google App Engine SDK
+\end{itemize}
+
+The upload with Google Plugin is quite simple, after a create a project as a Google Web Application Project access the context menu of the project and look for the option \emph{Google}, and then activate the \emph{Deploy to App Engine}. To the application deployment is done is necessary to specify the App ID and the password for the registered account.
+
+The other way to upload the application is using the \emph{appcfg.sh} (for linux) or \emph{appcfg.cmd} (for windows), both of then are present in the AppEngine SDK. 
+
+The general usage to upload the application using \emph{appcfg}  scripts is \emph{appcfg.sh update war}, where the \emph{war} is the path to the web archive for the java application.
+
 \subsection{Restriction}
+
 The Google App Engine is free, as long as you don't need more than 500 Mb of storage and the page views are not mode than 5 millions per month.
+
+\subsection{How to test Shortie}
+
+\emph{Shortie} application can be reached through the address \url{http://voodleclass.appspot.com/}, give it a try.
 
 \end{document}
 
