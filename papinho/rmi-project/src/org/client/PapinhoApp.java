@@ -41,7 +41,7 @@ public class PapinhoApp extends SingleFrameApplication {
     public void getRemoteServerObject(String host, String port) throws RemoteException,NotBoundException{
             registry = LocateRegistry.getRegistry(host, Integer.valueOf(port));
             PapinhoServerIface server = (PapinhoServerIface) registry.lookup("server");
-            Remote stub = UnicastRemoteObject.exportObject(client);
+            Remote stub = UnicastRemoteObject.exportObject(client,Integer.valueOf(port));
             client.setServer(server,stub);
     }
 
